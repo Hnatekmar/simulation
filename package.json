@@ -1,0 +1,11 @@
+{
+  "name": "thesis-simulation",
+  "version": "1.0.0",
+  "description": "Simulation part of thesis",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Hnátek",
+  "license": "MIT"
+}
