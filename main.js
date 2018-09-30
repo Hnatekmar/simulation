@@ -37,13 +37,13 @@ export default class Simulation {
 
   init (canvas) {
     if (this.world === undefined) {
+        this.world = new CES.World()
         if (canvas !== null) {
             this.renderer = new GraphicsSystem()
             this.renderer.setCanvas(canvas)
             this.renderer.draw = true
             this.world.addSystem(this.renderer)
         }
-        this.world = new CES.World()
         this.physicsSystem = new PhysicsSystem()
         this.world.addSystem(this.physicsSystem)
         this.world.addSystem(new CarSystem())
