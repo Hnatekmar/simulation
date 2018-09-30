@@ -22,15 +22,6 @@ export default CES.System.extend({
       this.renderer.stage.removeChild(entity.getComponent('graphics').container)
     })
   },
-  isVisible: function () {
-    let html = document.documentElement
-    return (
-      this.canvas.top >= 0 &&
-      this.canvas.left >= 0 &&
-      this.canvas.bottom <= (window.innerHeight || html.clientHeight) &&
-      this.canvas.right <= (window.innerWidth || html.clientWidth)
-    )
-  },
   update: function (dt) {
     if (this.draw) {
       this.renderer.ticker.update()
