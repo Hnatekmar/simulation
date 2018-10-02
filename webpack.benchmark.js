@@ -24,6 +24,6 @@ module.exports = {
     externals: [nodeExternals()],
     plugins: [],
     optimization: {
-        minimize: false
+        minimizer: [new UglifyJsPlugin()]
     }
 };

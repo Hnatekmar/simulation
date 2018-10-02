@@ -7,58 +7,59 @@ import * as p2 from 'p2'
 
 const CES = require('ces')
 
-function fillNaN (object, value) {
-  function replaceNaN (x) {
-    if (isNaN(x)) {
-      return value
+function fillNaN(object, value) {
+    function replaceNaN(x) {
+        if (isNaN(x)) {
+            return value
+        }
+        return x
     }
-    return x
-  }
-  let keys = Object.keys(object)
-  for (let i in keys) {
-    if (typeof object[keys[i]] === 'number' && isNaN(object[keys[i]])) {
-      object[keys[i]] = value
-    } else if (object[keys[i]] !== null && object[keys[i]].constructor === Float32Array) {
-      for (let j = 0; j < object[keys[i]].length; j++) {
-        object[keys[i]][j] = replaceNaN(object[keys[i]][j])
-      }
+
+    let keys = Object.keys(object)
+    for (let i in keys) {
+        if (typeof object[keys[i]] === 'number' && isNaN(object[keys[i]])) {
+            object[keys[i]] = value
+        } else if (object[keys[i]] !== null && object[keys[i]].constructor === Float32Array) {
+            for (let j = 0; j < object[keys[i]].length; j++) {
+                object[keys[i]][j] = replaceNaN(object[keys[i]][j])
+            }
+        }
     }
-  }
 }
 
 /**
  * Main class of simulation
  */
 export default class Simulation {
-  constructor (canvasElement, frames) {
-    this.time = frames
-    this.canvasElement = canvasElement
-  }
-
-  init (canvas) {
-    if (this.world === undefined) {
-        this.world = new CES.World()
-        if (canvas !== null) {
-            this.renderer = new GraphicsSystem()
-            this.renderer.setCanvas(canvas)
-            this.renderer.draw = true
-            this.world.addSystem(this.renderer)
-        }
-        this.physicsSystem = new PhysicsSystem()
-        this.world.addSystem(this.physicsSystem)
-        this.world.addSystem(new CarSystem())
-        this.car = Car(400.0, 400.0, this.world, this.genome)
-        this.roadDirector = new RoadDirector()
-        this.roadDirector.setWorld(this.world)
-        this.roadDirector.setCar(this.car)
-        this.world.addSystem(this.roadDirector)
-    } else {
-        this.car.getComponent('car').genome = this.genome
+    constructor(canvasElement, frames) {
+        this.time = frames
+        this.canvasElement = canvasElement
     }
-      this.lastDt = 0
-  }
 
-    evaluate (genome) {
+    init(canvas) {
+        if (this.world === undefined) {
+            this.world = new CES.World()
+            if (canvas !== null) {
+                this.renderer = new GraphicsSystem()
+                this.renderer.setCanvas(canvas)
+                this.renderer.draw = true
+                this.world.addSystem(this.renderer)
+            }
+            this.physicsSystem = new PhysicsSystem()
+            this.world.addSystem(this.physicsSystem)
+            this.world.addSystem(new CarSystem())
+            this.car = Car(400.0, 400.0, this.world, this.genome)
+            this.roadDirector = new RoadDirector()
+            this.roadDirector.setWorld(this.world)
+            this.roadDirector.setCar(this.car)
+            this.world.addSystem(this.roadDirector)
+        } else {
+            this.car.getComponent('car').genome = this.genome
+        }
+        this.lastDt = 0
+    }
+
+    evaluate(genome) {
         this.destroy()
         this.genome = genome
         this.init(this.canvasElement)
@@ -72,8 +73,8 @@ export default class Simulation {
         )
     }
 
-    evalGenome (dt, genome) {
-        let promise = this.evaluate(genome)
+    evalGenome(dt, genome) {
+        this.evaluate(genome)
         while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING) {
             this.update(dt)
         }
@@ -82,7 +83,7 @@ export default class Simulation {
     /**
      * Main simulation loop
      */
-    update (dt) {
+    update(dt) {
         if (this.lastDt === null) this.lastDt = dt
         this.acc += dt
         let currentFitness = this.car.getComponent('car').fitness
@@ -96,7 +97,7 @@ export default class Simulation {
     /**
      * Called on component destruction
      */
-    destroy () {
+    destroy() {
         if (this.world !== undefined) {
             this.car.getComponent('car').fitness = 0
             let body = this.car.getComponent('physics').body

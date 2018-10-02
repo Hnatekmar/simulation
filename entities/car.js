@@ -41,6 +41,6 @@ export default function (x, y, world, genome) {
     let p2World = entity.getComponent('physics').world
     car.addToWorld(p2World)
     carComponent.sensors = _.range(0, 360, 10)
-        .map((el) => new ray.Sensor([Math.cos(el * (Math.PI / 180)), Math.sin(el * (Math.PI / 180))], p2World))
+        .map((el) => new ray.Sensor([Math.cos(el * (Math.PI / 180)), Math.sin(el * (Math.PI / 180))], [body.id], p2World))
     return entity
 }

@@ -19,7 +19,7 @@ const neat = new NEAT.Neat(
     6, // LEFT, RIGHT, FORWARD, BACKWARDS, BREAK
     null,
     {
-        popsize: 256,
+        popsize: 8,
         mutation: NEAT.methods.mutation.ALL,
         mutationRate: 0.25,
         network: new NEAT.architect.Random(
