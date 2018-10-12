@@ -1,12 +1,13 @@
 {
-  "name": "thesis-simulation",
+  "name": "simulation-thesis",
   "version": "1.0.0",
   "description": "Simulation part of thesis",
-  "main": "main.js",
+  "main": "dist/simulation.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "benchmark": "node dist/benchmark.js",
-    "webpack": "webpack -p --progress --config webpack.benchmark.js --mode production"
+    "webpack-build": "webpack -p --progress --config webpack.build.js --mode production",
+    "webpack-profile": "webpack -p --progress --config webpack.benchmark.js --mode production"
   },
   "dependencies": {
     "canvas": "^1.6.12",

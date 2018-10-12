@@ -10,7 +10,7 @@ global.navigator = {
 }
 
 const benchmark = new require('nodemark')
-const Simulation = require('./main.js').default
+const Simulation = require('./dist/simulation').default
 const NEAT = require('neataptic')
 const fs = require('fs')
 

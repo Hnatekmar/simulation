@@ -3,9 +3,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     target: 'node',
-    entry: './benchmark.js',
+    entry: './main.js',
     output: {
-        filename: './benchmark.js'
+        library: 'simulation',
+        libraryTarget: 'umd',
+        filename: 'simulation.js'
     },
     module: {
         rules: [
@@ -24,6 +26,7 @@ module.exports = {
     externals: [nodeExternals()],
     plugins: [],
     optimization: {
-        minimizer: [new UglifyJsPlugin()]
+        minimize: false
+       // minimizer: [new UglifyJsPlugin()]
     }
 };
