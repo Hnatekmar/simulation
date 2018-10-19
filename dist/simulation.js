@@ -797,7 +797,7 @@ function fillNaN(object, value) {
 var main_Simulation =
 /*#__PURE__*/
 function () {
-  function Simulation(canvasElement, frames) {
+  function Simulation(frames, canvasElement) {
     main_classCallCheck(this, Simulation);
 
     this.time = frames;
@@ -810,7 +810,8 @@ function () {
       if (this.world === undefined) {
         this.world = new CES.World();
 
-        if (canvas !== null) {
+        if (canvas !== undefined) {
+          console.log(canvas);
           this.renderer = new graphics();
           this.renderer.setCanvas(canvas);
           this.renderer.draw = true;

@@ -37,7 +37,7 @@ if (!fs.existsSync('population.json')) {
 	neat.import(JSON.parse(jsonData))
 }
 
-let sim = new Simulation(null, 60)
+let sim = new Simulation(60)
 function generation() {
 	for (let i in neat.population) {
 		sim.evalGenome(1 / 30.0, neat.population[i])

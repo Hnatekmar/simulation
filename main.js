@@ -31,7 +31,7 @@ function fillNaN(object, value) {
  * Main class of simulation
  */
 export default class Simulation {
-    constructor(canvasElement, frames) {
+    constructor(frames, canvasElement) {
         this.time = frames
         this.canvasElement = canvasElement
     }
@@ -39,7 +39,8 @@ export default class Simulation {
     init(canvas) {
         if (this.world === undefined) {
             this.world = new CES.World()
-            if (canvas !== null) {
+            if (canvas !== undefined) {
+                console.log(canvas)
                 this.renderer = new GraphicsSystem()
                 this.renderer.setCanvas(canvas)
                 this.renderer.draw = true
