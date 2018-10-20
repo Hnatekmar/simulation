@@ -853,6 +853,8 @@ function () {
       while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING) {
         this.update(dt);
       }
+
+      return this.car.getComponent('car').fitness;
     }
     /**
      * Main simulation loop
