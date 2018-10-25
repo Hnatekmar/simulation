@@ -36,11 +36,10 @@ export default class Simulation {
         this.canvasElement = canvasElement
     }
 
-    init(canvas) {
+    init(canvas, startingPiece) {
         if (this.world === undefined) {
             this.world = new CES.World()
             if (canvas !== undefined) {
-                console.log(canvas)
                 this.renderer = new GraphicsSystem()
                 this.renderer.setCanvas(canvas)
                 this.renderer.draw = true
@@ -51,7 +50,7 @@ export default class Simulation {
             this.world.addSystem(new CarSystem())
             this.car = Car(400.0, 400.0, this.world, this.genome)
             this.roadDirector = new RoadDirector()
-            this.roadDirector.setWorld(this.world)
+            this.roadDirector.setup(this.world, startingPiece)
             this.roadDirector.setCar(this.car)
             this.world.addSystem(this.roadDirector)
         } else {

@@ -626,11 +626,11 @@ function getDirection(x, y, w, h) {
   return 'onScreen';
 }
 
-var STARTING_PIECE = 'Box';
 /* harmony default export */ var roadDirector = (external_ces_["System"].extend({
-  setWorld: function setWorld(world) {
+  setup: function setup(world, startingPiece) {
     var _this = this;
 
+    this.STARTING_PIECE = startingPiece || '-';
     this.world = world;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
@@ -673,7 +673,7 @@ var STARTING_PIECE = 'Box';
       }
     };
     Object.keys(this.parts).forEach(function (key) {
-      if (key !== STARTING_PIECE) {
+      if (key !== _this.STARTING_PIECE) {
         _this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
       }
     });
@@ -682,7 +682,7 @@ var STARTING_PIECE = 'Box';
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
     this.currentPart['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
-    this.currentPart = this.parts[STARTING_PIECE];
+    this.currentPart = this.parts[this.STARTING_PIECE];
     this.currentPart['group'].moveAbsolute(0, 0);
   },
   setCar: function setCar(car) {
@@ -708,7 +708,7 @@ var STARTING_PIECE = 'Box';
     this.rng = new external_chance_default.a('RNG' + this.position[0] + ',' + this.position[1]);
 
     if (this.position[0] === 0 && this.position[1] === 0) {
-      this.currentPart = this.parts[STARTING_PIECE];
+      this.currentPart = this.parts[this.STARTING_PIECE];
     } else {
       this.currentPart = this.parts[this.rng.pickone(possiblePieces)];
     }
@@ -735,7 +735,7 @@ var STARTING_PIECE = 'Box';
   },
   update: function update(dt) {
     if (this.currentPart === undefined) {
-      this.currentPart = this.parts[STARTING_PIECE];
+      this.currentPart = this.parts[this.STARTING_PIECE];
     }
 
     var pos = this.getCarPosition();
@@ -806,12 +806,11 @@ function () {
 
   main_createClass(Simulation, [{
     key: "init",
-    value: function init(canvas) {
+    value: function init(canvas, startingPiece) {
       if (this.world === undefined) {
         this.world = new CES.World();
 
         if (canvas !== undefined) {
-          console.log(canvas);
           this.renderer = new graphics();
           this.renderer.setCanvas(canvas);
           this.renderer.draw = true;
@@ -823,7 +822,7 @@ function () {
         this.world.addSystem(new systems_car());
         this.car = entities_car(400.0, 400.0, this.world, this.genome);
         this.roadDirector = new roadDirector();
-        this.roadDirector.setWorld(this.world);
+        this.roadDirector.setup(this.world, startingPiece);
         this.roadDirector.setCar(this.car);
         this.world.addSystem(this.roadDirector);
       } else {
