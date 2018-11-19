@@ -59,7 +59,7 @@ export default CES.System.extend({
         pb.force = [0, 0]
         pb.sleep()
       }
-      if (pb.sleepState === p2.Body.SLEEPING) return
+      if (pb.sleepState === p2.Body.SLEEPING) return;
       let output = body.genome.activate(this.input)
       let isVelNaN = isNaN(vel)
       for (let i = 0; i < output.length; i++) {

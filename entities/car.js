@@ -7,12 +7,11 @@ import CarComponent from '../components/car.js'
 import * as _ from 'lodash'
 import * as ray from '../entities/raySensor'
 
-export default function (x, y, world, genome) {
+export default function (x, y, world, genome, loader) {
     const entity = new CES.Entity()
-
-    if (PIXI.loader.resources['./static/chassis.png'] !== undefined) {
+    if (loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
         const graphicsComponent = new GraphicsComponent([
-            new PIXI.Sprite(PIXI.loader.resources['./static/chassis.png'].texture)
+            new PIXI.Sprite(loader.resources['./static/chassis.png'].texture)
         ])
         entity.addComponent(graphicsComponent)
     }

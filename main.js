@@ -31,9 +31,10 @@ function fillNaN(object, value) {
  * Main class of simulation
  */
 export default class Simulation {
-    constructor(frames, canvasElement) {
+    constructor(frames, canvasElement, loader) {
         this.time = frames
         this.canvasElement = canvasElement
+        this.loader = loader
     }
 
     init(canvas, startingPiece) {
@@ -48,7 +49,7 @@ export default class Simulation {
             this.physicsSystem = new PhysicsSystem()
             this.world.addSystem(this.physicsSystem)
             this.world.addSystem(new CarSystem())
-            this.car = Car(400.0, 400.0, this.world, this.genome)
+            this.car = Car(400.0, 400.0, this.world, this.genome, this.loader)
             this.roadDirector = new RoadDirector()
             this.roadDirector.setup(this.world, startingPiece)
             this.roadDirector.setCar(this.car)

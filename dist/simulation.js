@@ -484,11 +484,11 @@ function () {
 
 
 
-/* harmony default export */ var entities_car = (function (x, y, world, genome) {
+/* harmony default export */ var entities_car = (function (x, y, world, genome, loader) {
   var entity = new external_ces_["Entity"]();
 
-  if (external_pixi_js_["loader"].resources['./static/chassis.png'] !== undefined) {
-    var graphicsComponent = new components_graphics([new external_pixi_js_["Sprite"](external_pixi_js_["loader"].resources['./static/chassis.png'].texture)]);
+  if (loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
+    var graphicsComponent = new components_graphics([new external_pixi_js_["Sprite"](loader.resources['./static/chassis.png'].texture)]);
     entity.addComponent(graphicsComponent);
   }
 
@@ -797,11 +797,12 @@ function fillNaN(object, value) {
 var main_Simulation =
 /*#__PURE__*/
 function () {
-  function Simulation(frames, canvasElement) {
+  function Simulation(frames, canvasElement, loader) {
     main_classCallCheck(this, Simulation);
 
     this.time = frames;
     this.canvasElement = canvasElement;
+    this.loader = loader;
   }
 
   main_createClass(Simulation, [{
@@ -820,7 +821,7 @@ function () {
         this.physicsSystem = new physics();
         this.world.addSystem(this.physicsSystem);
         this.world.addSystem(new systems_car());
-        this.car = entities_car(400.0, 400.0, this.world, this.genome);
+        this.car = entities_car(400.0, 400.0, this.world, this.genome, this.loader);
         this.roadDirector = new roadDirector();
         this.roadDirector.setup(this.world, startingPiece);
         this.roadDirector.setCar(this.car);
