@@ -317,7 +317,7 @@ function indexOfMaximum(arr) {
       } else if (throttleChoice === 1) {
         // BACKWARDS
         dir = 0.15;
-        body.fitness += vel * 0.5;
+        body.fitness += vel;
       } else if (throttleChoice === 2) {
         // BREAK
         if (vel === 0.0) {
@@ -332,12 +332,12 @@ function indexOfMaximum(arr) {
       }
 
       if (steeringChoice === 0) {
-        if (body.frontWheel.steerValue > 5.0 / 6.0 * Math.PI) {
-          body.frontWheel.steerValue -= Math.PI / 180.0 * 10;
+        if (body.frontWheel.steerValue < Math.PI / 180.0 * 45) {
+          body.frontWheel.steerValue += Math.PI / 180.0;
         }
       } else if (steeringChoice === 1) {
-        if (body.frontWheel.steerValue < Math.PI / 6.0) {
-          body.frontWheel.steerValue += Math.PI / 180.0 * 10;
+        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 45) {
+          body.frontWheel.steerValue -= Math.PI / 180.0;
         }
       }
 
