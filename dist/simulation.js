@@ -272,7 +272,7 @@ function indexOfMaximum(arr) {
 
       var drawArea;
 
-      if (graphics !== null) {
+      if (graphics !== undefined) {
         if (body.graphics === undefined) {
           drawArea = new external_pixi_js_["Graphics"]();
           graphics.container.parent.addChild(drawArea);
@@ -292,8 +292,11 @@ function indexOfMaximum(arr) {
           body.sensors[_i].shortest.distance = 800;
         }
 
-        drawArea.moveTo(body.sensors[_i].ray.from[0], body.sensors[_i].ray.from[1]);
-        drawArea.lineTo(body.sensors[_i].ray.from[0] + body.sensors[_i].ray.direction[0] * body.sensors[_i].shortest.distance, body.sensors[_i].ray.from[1] + body.sensors[_i].ray.direction[1] * body.sensors[_i].shortest.distance);
+        if (graphics !== undefined) {
+          drawArea.moveTo(body.sensors[_i].ray.from[0], body.sensors[_i].ray.from[1]);
+          drawArea.lineTo(body.sensors[_i].ray.from[0] + body.sensors[_i].ray.direction[0] * body.sensors[_i].shortest.distance, body.sensors[_i].ray.from[1] + body.sensors[_i].ray.direction[1] * body.sensors[_i].shortest.distance);
+        }
+
         body.sensors[_i].shortest.distance /= 800.0;
         _this.input[_i] = body.sensors[_i].shortest.distance;
       }
@@ -706,6 +709,8 @@ function getDirection(x, y, w, h) {
     };
     Object.keys(this.parts).forEach(function (key) {
       if (key !== _this.STARTING_PIECE) {
+        if (_this.parts[key] === undefined) throw new Error(key + ' is undefined');
+
         _this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
       }
     });
@@ -879,8 +884,8 @@ function () {
     }
   }, {
     key: "evalGenome",
-    value: function evalGenome(dt, genome) {
-      this.evaluate(genome);
+    value: function evalGenome(dt, genome, startingPiece) {
+      this.evaluate(genome, startingPiece);
 
       while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING) {
         this.update(dt);

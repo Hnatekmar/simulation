@@ -108,6 +108,7 @@ export default CES.System.extend({
         }
         Object.keys(this.parts).forEach((key) => {
             if (key !== this.STARTING_PIECE) {
+                if (this.parts[key] === undefined) throw new Error(key + ' is undefined')
                 this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000)
             }
         })
