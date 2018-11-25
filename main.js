@@ -74,8 +74,8 @@ export default class Simulation {
         )
     }
 
-    evalGenome(dt, genome) {
-        this.evaluate(genome)
+    evalGenome(dt, genome, startingPiece) {
+        this.evaluate(genome, startingPiece)
         while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING) {
             this.update(dt)
         }
