@@ -14,7 +14,7 @@ function getDirection (x, y, w, h) {
 
 export default CES.System.extend({
     setup: function (world, startingPiece) {
-        this.STARTING_PIECE = startingPiece || '-'
+        this.STARTING_PIECE = startingPiece || 'I left'
         this.world = world
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
@@ -30,6 +30,29 @@ export default CES.System.extend({
                 }
             },
             'I': {
+                'group': RoadPart(0, 0, this.world, [
+                    Wall(250, 0, 20, 8000, this.world),
+                    Wall(550, 0, 20, 8000, this.world)
+                ]),
+                'possibleParts': {
+                    'up': ['Cross', 'I'],
+                    'down': ['Cross', 'T', 'I']
+                }
+            },
+            'I left': {
+                'group': RoadPart(0, 0, this.world, [
+                    Wall(250, 0, 20, 480, this.world),
+                    Wall(250, 750, 20, 400, this.world),
+                    Wall(105, 250, 310, 20, this.world),
+                    Wall(105, 550, 310, 20, this.world),
+                    Wall(550, 0, 20, 8000, this.world)
+                ]),
+                'possibleParts': {
+                    'up': ['Cross', 'I'],
+                    'down': ['Cross', 'T', 'I']
+                }
+            },
+            'I right': {
                 'group': RoadPart(0, 0, this.world, [
                     Wall(250, 0, 20, 8000, this.world),
                     Wall(550, 0, 20, 8000, this.world)

@@ -147,7 +147,7 @@ var external_ces_ = __webpack_require__(1);
 
  // noinspection JSUnusedLocalSymbols
 
-/* harmony default export */ var graphics = (external_ces_["System"].extend({
+/* harmony default export */ var systems_graphics = (external_ces_["System"].extend({
   setCanvas: function setCanvas(canvas) {
     if (this.renderer !== undefined) return;
     this.renderer = new external_pixi_js_["Application"]({
@@ -204,7 +204,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 30.0, dt, 5);
+    this.p2World.step(1 / 30.0, dt, 10);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -215,6 +215,7 @@ var external_p2_ = __webpack_require__(0);
   }
 }));
 // CONCATENATED MODULE: ./systems/car.js
+
 
 
 
@@ -239,13 +240,13 @@ function indexOfMaximum(arr) {
 
     this.world.getEntities('car').forEach(function (entity) {
       var body = entity.getComponent('car');
+      var graphics = entity.getComponent('graphics');
       var pb = body.chassis.getComponent('physics').body;
 
       if (pb.callbackInitialized === undefined) {
         pb.world.on('beginContact', function (event) {
           var bodyA = event.bodyA;
           var bodyB = event.bodyB;
-          if (pb.sleepState !== external_p2_["Body"].SLEEPING) body.fitness -= 50000;
 
           if (bodyA.id === pb.id || bodyB.id === pb.id) {
             pb.allowSleep = true;
@@ -269,6 +270,21 @@ function indexOfMaximum(arr) {
         body.backWheel.setSideFriction(6000);
       }
 
+      var drawArea;
+
+      if (graphics !== null) {
+        if (body.graphics === undefined) {
+          drawArea = new external_pixi_js_["Graphics"]();
+          graphics.container.parent.addChild(drawArea);
+          body.graphics = drawArea;
+        } else {
+          drawArea = body.graphics;
+        }
+
+        drawArea.clear();
+        drawArea.lineStyle(2, 0x0000FF, 0xFF);
+      }
+
       for (var _i = 0; _i < body.sensors.length; _i++) {
         body.sensors[_i].cast(pb.position, [pb.id], pb.angle);
 
@@ -276,6 +292,8 @@ function indexOfMaximum(arr) {
           body.sensors[_i].shortest.distance = 800;
         }
 
+        drawArea.moveTo(body.sensors[_i].ray.from[0], body.sensors[_i].ray.from[1]);
+        drawArea.lineTo(body.sensors[_i].ray.from[0] + body.sensors[_i].ray.direction[0] * body.sensors[_i].shortest.distance, body.sensors[_i].ray.from[1] + body.sensors[_i].ray.direction[1] * body.sensors[_i].shortest.distance);
         body.sensors[_i].shortest.distance /= 800.0;
         _this.input[_i] = body.sensors[_i].shortest.distance;
       }
@@ -332,11 +350,11 @@ function indexOfMaximum(arr) {
       }
 
       if (steeringChoice === 0) {
-        if (body.frontWheel.steerValue < Math.PI / 180.0 * 45) {
+        if (body.frontWheel.steerValue < Math.PI / 180.0 * 90) {
           body.frontWheel.steerValue += Math.PI / 180.0;
         }
       } else if (steeringChoice === 1) {
-        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 45) {
+        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 90) {
           body.frontWheel.steerValue -= Math.PI / 180.0;
         }
       }
@@ -630,7 +648,7 @@ function getDirection(x, y, w, h) {
   setup: function setup(world, startingPiece) {
     var _this = this;
 
-    this.STARTING_PIECE = startingPiece || '-';
+    this.STARTING_PIECE = startingPiece || 'I left';
     this.world = world;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
@@ -643,6 +661,20 @@ function getDirection(x, y, w, h) {
         }
       },
       'I': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'possibleParts': {
+          'up': ['Cross', 'I'],
+          'down': ['Cross', 'T', 'I']
+        }
+      },
+      'I left': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 480, this.world), wall(250, 750, 20, 400, this.world), wall(105, 250, 310, 20, this.world), wall(105, 550, 310, 20, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'possibleParts': {
+          'up': ['Cross', 'I'],
+          'down': ['Cross', 'T', 'I']
+        }
+      },
+      'I right': {
         'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
         'possibleParts': {
           'up': ['Cross', 'I'],
@@ -812,7 +844,7 @@ function () {
         this.world = new CES.World();
 
         if (canvas !== undefined) {
-          this.renderer = new graphics();
+          this.renderer = new systems_graphics();
           this.renderer.setCanvas(canvas);
           this.renderer.draw = true;
           this.world.addSystem(this.renderer);
@@ -834,10 +866,10 @@ function () {
     }
   }, {
     key: "evaluate",
-    value: function evaluate(genome) {
+    value: function evaluate(genome, startingPiece) {
       this.destroy();
       this.genome = genome;
-      this.init(this.canvasElement);
+      this.init(this.canvasElement, startingPiece);
       this.acc = 0;
       this.lastDt = null;
       var t = this;

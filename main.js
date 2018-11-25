@@ -60,10 +60,10 @@ export default class Simulation {
         this.lastDt = 0
     }
 
-    evaluate(genome) {
+    evaluate(genome, startingPiece) {
         this.destroy()
         this.genome = genome
-        this.init(this.canvasElement)
+        this.init(this.canvasElement, startingPiece)
         this.acc = 0
         this.lastDt = null
         let t = this
