@@ -46,7 +46,7 @@ export default CES.System.extend({
                 body.backWheel.setSideFriction(6000)
             }
             let drawArea
-            if (graphics !== null) {
+            if (graphics !== undefined) {
                 if (body.graphics === undefined) {
                     drawArea = new PIXI.Graphics()
                     graphics.container.parent.addChild(drawArea)
@@ -62,10 +62,12 @@ export default CES.System.extend({
                 if (body.sensors[i].shortest.distance === Infinity || body.sensors[i].shortest.distance > 800) {
                     body.sensors[i].shortest.distance = 800
                 }
-                drawArea.moveTo(body.sensors[i].ray.from[0], body.sensors[i].ray.from[1])
-                drawArea.lineTo(
-                    body.sensors[i].ray.from[0] + body.sensors[i].ray.direction[0] * body.sensors[i].shortest.distance,
-                    body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
+                if(graphics !== undefined) {
+                    drawArea.moveTo(body.sensors[i].ray.from[0], body.sensors[i].ray.from[1])
+                    drawArea.lineTo(
+                        body.sensors[i].ray.from[0] + body.sensors[i].ray.direction[0] * body.sensors[i].shortest.distance,
+                        body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
+                }
                 body.sensors[i].shortest.distance /= 800.0
                 this.input[i] = body.sensors[i].shortest.distance
             }
