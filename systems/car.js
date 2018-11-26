@@ -14,6 +14,15 @@ function indexOfMaximum (arr) {
     return index
 }
 
+function normalizeAngle(angle){
+    angle = angle % (2*Math.PI);
+    if(angle < 0){
+        angle += (2*Math.PI);
+    }
+    return angle;
+}
+
+
 // noinspection JSUnusedLocalSymbols
 export default CES.System.extend({
     update: function (dt) {
@@ -71,7 +80,7 @@ export default CES.System.extend({
                 body.sensors[i].shortest.distance /= 800.0
                 this.input[i] = body.sensors[i].shortest.distance
             }
-            this.input[body.sensors.length - 1] = pb.angle[0]
+            this.input[body.sensors.length - 1] = normalizeAngle(pb.angle)
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
             if (vel === 0 && body.fitness !== 0) {
                 pb.allowSleep = true
