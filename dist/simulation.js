@@ -225,6 +225,16 @@ function indexOfMaximum(arr) {
   }
 
   return index;
+}
+
+function normalizeAngle(angle) {
+  angle = angle % (2 * Math.PI);
+
+  if (angle < 0) {
+    angle += 2 * Math.PI;
+  }
+
+  return angle;
 } // noinspection JSUnusedLocalSymbols
 
 
@@ -239,6 +249,7 @@ function indexOfMaximum(arr) {
 
       if (pb.callbackInitialized === undefined) {
         pb.world.on('beginContact', function (event) {
+          body.fitness -= 7000000;
           var bodyA = event.bodyA;
           var bodyB = event.bodyB;
 
@@ -295,7 +306,7 @@ function indexOfMaximum(arr) {
         _this.input[_i] = body.sensors[_i].shortest.distance;
       }
 
-      _this.input[body.sensors.length - 1] = pb.angle[0];
+      _this.input[body.sensors.length - 1] = normalizeAngle(pb.angle);
       var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
 
       if (vel === 0 && body.fitness !== 0) {
@@ -667,14 +678,18 @@ function getDirection(x, y, w, h) {
         'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 480, this.world), wall(250, 750, 20, 400, this.world), wall(105, 250, 310, 20, this.world), wall(105, 550, 310, 20, this.world), wall(550, 0, 20, 8000, this.world)]),
         'possibleParts': {
           'up': ['Cross', 'I'],
-          'down': ['Cross', 'T', 'I']
+          'down': ['Cross', 'T', 'I'],
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
         }
       },
       'I right': {
         'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
         'possibleParts': {
           'up': ['Cross', 'I'],
-          'down': ['Cross', 'T', 'I']
+          'down': ['Cross', 'T', 'I'],
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
         }
       },
       'T': {

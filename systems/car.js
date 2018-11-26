@@ -33,6 +33,7 @@ export default CES.System.extend({
 
             if (pb.callbackInitialized === undefined) {
                 pb.world.on('beginContact', (event) => {
+                    body.fitness -= 7000000
                     let bodyA = event.bodyA
                     let bodyB = event.bodyB
                     if ((bodyA.id === pb.id) || (bodyB.id === pb.id)) {
