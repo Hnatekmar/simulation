@@ -49,7 +49,9 @@ export default CES.System.extend({
                 ]),
                 'possibleParts': {
                     'up': ['Cross', 'I'],
-                    'down': ['Cross', 'T', 'I']
+                    'down': ['Cross', 'T', 'I'],
+                    'left': ['Cross', 'T'],
+                    'right': ['Cross', 'T']
                 }
             },
             'I right': {
@@ -59,7 +61,9 @@ export default CES.System.extend({
                 ]),
                 'possibleParts': {
                     'up': ['Cross', 'I'],
-                    'down': ['Cross', 'T', 'I']
+                    'down': ['Cross', 'T', 'I'],
+                    'left': ['Cross', 'T'],
+                    'right': ['Cross', 'T']
                 }
             },
             'T': {
