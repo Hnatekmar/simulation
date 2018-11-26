@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -122,16 +122,10 @@ module.exports = require("chance");
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash");
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
 module.exports = require("assert");
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -286,7 +280,7 @@ function indexOfMaximum(arr) {
       }
 
       for (var _i = 0; _i < body.sensors.length; _i++) {
-        body.sensors[_i].cast(pb.position, [pb.id], pb.angle);
+        body.sensors[_i].cast(pb.position, pb.angle);
 
         if (body.sensors[_i].shortest.distance === Infinity || body.sensors[_i].shortest.distance > 800) {
           body.sensors[_i].shortest.distance = 800;
@@ -301,7 +295,7 @@ function indexOfMaximum(arr) {
         _this.input[_i] = body.sensors[_i].shortest.distance;
       }
 
-      _this.input[body.sensors.length - 1] = pb.angle;
+      _this.input[body.sensors.length - 1] = pb.angle[0];
       var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
 
       if (vel === 0 && body.fitness !== 0) {
@@ -334,11 +328,9 @@ function indexOfMaximum(arr) {
       if (throttleChoice === 0) {
         // FORWARD
         dir = -1;
-        body.fitness += vel;
       } else if (throttleChoice === 1) {
         // BACKWARDS
         dir = 0.15;
-        body.fitness += vel;
       } else if (throttleChoice === 2) {
         // BREAK
         if (vel === 0.0) {
@@ -351,6 +343,8 @@ function indexOfMaximum(arr) {
         body.fitness -= 100;
         body.frontWheel.setBrakeForce(5 * 2000);
       }
+
+      body.fitness += vel;
 
       if (steeringChoice === 0) {
         if (body.frontWheel.steerValue < Math.PI / 180.0 * 90) {
@@ -429,9 +423,6 @@ function indexOfMaximum(arr) {
     });
   }
 }));
-// EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
-
 // CONCATENATED MODULE: ./entities/raySensor.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -504,7 +495,6 @@ function () {
 
 
 
-
 /* harmony default export */ var entities_car = (function (x, y, world, genome, loader) {
   var entity = new external_ces_["Entity"]();
 
@@ -535,9 +525,12 @@ function () {
   var carComponent = entity.getComponent('car');
   var p2World = entity.getComponent('physics').world;
   car.addToWorld(p2World);
-  carComponent.sensors = external_lodash_["range"](0, 360, 10).map(function (el) {
-    return new raySensor_Sensor([Math.cos(el * (Math.PI / 180)), Math.sin(el * (Math.PI / 180))], [body.id], p2World);
-  });
+  carComponent.sensors = [];
+
+  for (var startingAngle = 0; startingAngle <= 360; startingAngle += 10) {
+    carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
+  }
+
   return entity;
 });
 // CONCATENATED MODULE: ./entities/wall.js
@@ -586,7 +579,7 @@ function () {
   function PhysicsGroup(bodies) {
     physicsGroup_classCallCheck(this, PhysicsGroup);
 
-    var assert = __webpack_require__(5);
+    var assert = __webpack_require__(4);
 
     assert(bodies instanceof Array);
     this.bodies = bodies;
@@ -709,8 +702,6 @@ function getDirection(x, y, w, h) {
     };
     Object.keys(this.parts).forEach(function (key) {
       if (key !== _this.STARTING_PIECE) {
-        if (_this.parts[key] === undefined) throw new Error(key + ' is undefined');
-
         _this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
       }
     });
@@ -755,7 +746,7 @@ function getDirection(x, y, w, h) {
   },
   moveCarBackToScreen: function moveCarBackToScreen(direction) {
     var body = this.car.getComponent('physics').body;
-    this.car.getComponent('car').fitness += 500;
+    this.car.getComponent('car').fitness *= 2;
     var newPos = [0, 0];
 
     if (direction === 'up') {

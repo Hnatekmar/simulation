@@ -58,7 +58,7 @@ export default CES.System.extend({
                 drawArea.lineStyle(2, 0x0000FF, 0xFF);
             }
             for (let i = 0; i < body.sensors.length; i++) {
-                body.sensors[i].cast(pb.position, [pb.id], pb.angle)
+                body.sensors[i].cast(pb.position, pb.angle)
                 if (body.sensors[i].shortest.distance === Infinity || body.sensors[i].shortest.distance > 800) {
                     body.sensors[i].shortest.distance = 800
                 }
@@ -71,7 +71,7 @@ export default CES.System.extend({
                 body.sensors[i].shortest.distance /= 800.0
                 this.input[i] = body.sensors[i].shortest.distance
             }
-            this.input[body.sensors.length - 1] = pb.angle
+            this.input[body.sensors.length - 1] = pb.angle[0]
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
             if (vel === 0 && body.fitness !== 0) {
                 pb.allowSleep = true
@@ -98,10 +98,8 @@ export default CES.System.extend({
             let dir = 0
             if (throttleChoice === 0) { // FORWARD
                 dir = -1
-                body.fitness += vel
             } else if (throttleChoice === 1) { // BACKWARDS
                 dir = 0.15
-                body.fitness += vel
             } else if (throttleChoice === 2) { // BREAK
                 if (vel === 0.0) {
                     pb.allowSleep = true
@@ -112,6 +110,7 @@ export default CES.System.extend({
                 body.fitness -= 100
                 body.frontWheel.setBrakeForce(5 * 2000)
             }
+            body.fitness += vel
             if (steeringChoice === 0) {
                 if (body.frontWheel.steerValue < (Math.PI / 180.0) * 90) {
                     body.frontWheel.steerValue += (Math.PI / 180.0)
