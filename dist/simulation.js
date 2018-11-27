@@ -348,11 +348,11 @@ function normalizeAngle(angle) {
 
       if (steeringChoice === 0) {
         if (body.frontWheel.steerValue < Math.PI / 180.0 * 90) {
-          body.frontWheel.steerValue += Math.PI / 180.0 * 5;
+          body.frontWheel.steerValue += Math.PI / 180.0 * 15;
         }
       } else if (steeringChoice === 1) {
         if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 90) {
-          body.frontWheel.steerValue -= Math.PI / 180.0 * 5;
+          body.frontWheel.steerValue -= Math.PI / 180.0 * 15;
         }
       }
 
