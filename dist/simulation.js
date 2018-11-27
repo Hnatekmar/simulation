@@ -198,7 +198,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 30.0, dt, 10);
+    this.p2World.step(1 / 60.0, dt, 10);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -330,40 +330,29 @@ function normalizeAngle(angle) {
         }
       }
 
-      var steeringControl = output.slice(0, 3);
+      var steeringControl = output.slice(0, 2);
       var steeringChoice = indexOfMaximum(steeringControl);
-      var throttleControl = output.slice(4, 6);
+      var throttleControl = output.slice(3, 5);
       var throttleChoice = indexOfMaximum(throttleControl);
       var dir = 0;
 
       if (throttleChoice === 0) {
         // FORWARD
         dir = -1;
+        body.fitness += 1;
       } else if (throttleChoice === 1) {
         // BACKWARDS
-        dir = 0.15;
-      } else if (throttleChoice === 2) {
-        // BREAK
-        if (vel === 0.0) {
-          pb.allowSleep = true;
-          pb.force = [0, 0];
-          pb.sleep();
-        }
-
-        dir = 0;
-        body.fitness -= 100;
-        body.frontWheel.setBrakeForce(5 * 2000);
+        dir = 0.25;
+        body.fitness += 0.25;
       }
-
-      body.fitness += vel;
 
       if (steeringChoice === 0) {
         if (body.frontWheel.steerValue < Math.PI / 180.0 * 90) {
-          body.frontWheel.steerValue += Math.PI / 180.0;
+          body.frontWheel.steerValue += Math.PI / 180.0 * 5;
         }
       } else if (steeringChoice === 1) {
         if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 90) {
-          body.frontWheel.steerValue -= Math.PI / 180.0;
+          body.frontWheel.steerValue -= Math.PI / 180.0 * 5;
         }
       }
 

@@ -108,10 +108,11 @@ export default CES.System.extend({
             let dir = 0
             if (throttleChoice === 0) { // FORWARD
                 dir = -1
+                body.fitness += 1
             } else if (throttleChoice === 1) { // BACKWARDS
                 dir = 0.25
+                body.fitness += 0.25
             }
-            body.fitness += vel
             if (steeringChoice === 0) {
                 if (body.frontWheel.steerValue < (Math.PI / 180.0) * 90) {
                     body.frontWheel.steerValue += (Math.PI / 180.0) * 5
