@@ -83,11 +83,6 @@ export default CES.System.extend({
             }
             this.input[body.sensors.length - 1] = normalizeAngle(pb.angle)
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
-            if (vel === 0 && body.fitness !== 0) {
-                pb.allowSleep = true
-                pb.force = [0, 0]
-                pb.sleep()
-            }
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
             let isVelNaN = isNaN(vel)

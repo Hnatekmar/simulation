@@ -308,13 +308,6 @@ function normalizeAngle(angle) {
 
       _this.input[body.sensors.length - 1] = normalizeAngle(pb.angle);
       var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
-
-      if (vel === 0 && body.fitness !== 0) {
-        pb.allowSleep = true;
-        pb.force = [0, 0];
-        pb.sleep();
-      }
-
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
       var output = body.genome.activate(_this.input);
       var isVelNaN = isNaN(vel);
