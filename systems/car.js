@@ -2,6 +2,8 @@ import * as CES from 'ces'
 import * as p2 from 'p2'
 import * as PIXI from 'pixi.js'
 
+const MAXIMUM_STEER = 80
+const ROTATION_PER_SECOND = MAXIMUM_STEER
 function indexOfMaximum (arr) {
     let index = -1
     let maximum = -1
@@ -96,28 +98,20 @@ export default CES.System.extend({
                     return
                 }
             }
-            let steeringControl = output.slice(0, 2)
-            let steeringChoice = indexOfMaximum(steeringControl)
-            let throttleControl = output.slice(3, 5)
-            let throttleChoice = indexOfMaximum(throttleControl)
-            let dir = 0
-            if (throttleChoice === 0) { // FORWARD
-                dir = -1
-                body.fitness += 1
-            } else if (throttleChoice === 1) { // BACKWARDS
-                dir = 0.25
-                body.fitness += 0.25
-            }
+            let steeringChoice = indexOfMaximum(output.slice(0, 2))
+            let dir = -1
             if (steeringChoice === 0) {
-                if (body.frontWheel.steerValue < (Math.PI / 180.0) * 90) {
-                    body.frontWheel.steerValue += (Math.PI / 180.0) * 15
+                if (body.frontWheel.steerValue < (Math.PI / 180.0) * MAXIMUM_STEER) {
+                    body.frontWheel.steerValue += (Math.PI / 180.0) * ROTATION_PER_SECOND * dt
                 }
             } else if (steeringChoice === 1) {
-                if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 90) {
-                    body.frontWheel.steerValue -= (Math.PI / 180.0) * 15
+                if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * MAXIMUM_STEER) {
+                    body.frontWheel.steerValue -= (Math.PI / 180.0) * ROTATION_PER_SECOND * dt
                 }
             }
-            body.backWheel.engineForce = dir * 7 * 9000
+            let speed = indexOfMaximum(output.slice(2, output.length)) - 1
+            body.backWheel.engineForce = dir * speed * 9000
+            body.fitness += speed
         })
     }
 })
