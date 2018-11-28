@@ -212,6 +212,8 @@ var external_p2_ = __webpack_require__(0);
 
 
 
+var MAXIMUM_STEER = 80;
+var ROTATION_PER_SECOND = MAXIMUM_STEER;
 
 function indexOfMaximum(arr) {
   var index = -1;
@@ -323,33 +325,22 @@ function normalizeAngle(angle) {
         }
       }
 
-      var steeringControl = output.slice(0, 2);
-      var steeringChoice = indexOfMaximum(steeringControl);
-      var throttleControl = output.slice(3, 5);
-      var throttleChoice = indexOfMaximum(throttleControl);
-      var dir = 0;
-
-      if (throttleChoice === 0) {
-        // FORWARD
-        dir = -1;
-        body.fitness += 1;
-      } else if (throttleChoice === 1) {
-        // BACKWARDS
-        dir = 0.25;
-        body.fitness += 0.25;
-      }
+      var steeringChoice = indexOfMaximum(output.slice(0, 2));
+      var dir = -1;
 
       if (steeringChoice === 0) {
-        if (body.frontWheel.steerValue < Math.PI / 180.0 * 90) {
-          body.frontWheel.steerValue += Math.PI / 180.0 * 15;
+        if (body.frontWheel.steerValue < Math.PI / 180.0 * MAXIMUM_STEER) {
+          body.frontWheel.steerValue += Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
         }
       } else if (steeringChoice === 1) {
-        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * 90) {
-          body.frontWheel.steerValue -= Math.PI / 180.0 * 15;
+        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * MAXIMUM_STEER) {
+          body.frontWheel.steerValue -= Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
         }
       }
 
-      body.backWheel.engineForce = dir * 7 * 9000;
+      var speed = indexOfMaximum(output.slice(3, 9)) - 1;
+      body.backWheel.engineForce = dir * speed * 9000;
+      body.fitness += speed;
     });
   }
 }));
@@ -520,7 +511,7 @@ function () {
   car.addToWorld(p2World);
   carComponent.sensors = [];
 
-  for (var startingAngle = 0; startingAngle <= 360; startingAngle += 10) {
+  for (var startingAngle = 0; startingAngle <= 360; startingAngle += 20) {
     carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
   }
 
@@ -637,7 +628,7 @@ function getDirection(x, y, w, h) {
   setup: function setup(world, startingPiece) {
     var _this = this;
 
-    this.STARTING_PIECE = startingPiece || 'I left';
+    this.STARTING_PIECE = startingPiece || 'Box';
     this.world = world;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];

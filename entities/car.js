@@ -39,7 +39,7 @@ export default function (x, y, world, genome, loader) {
     let p2World = entity.getComponent('physics').world
     car.addToWorld(p2World)
     carComponent.sensors = []
-    for (let startingAngle = 0; startingAngle <= 360; startingAngle += 10) {
+    for (let startingAngle = 0; startingAngle <= 360; startingAngle += 20) {
         carComponent.sensors.push(new ray.Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World))
     }
     return entity
