@@ -111,7 +111,7 @@ export default CES.System.extend({
             }
             let speed = indexOfMaximum(output.slice(2, output.length)) - 1
             body.backWheel.engineForce = dir * speed * 9000
-            body.fitness += speed
+            body.fitness += speed * dt
         })
     }
 })
