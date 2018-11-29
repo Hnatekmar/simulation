@@ -33,15 +33,24 @@ export default CES.System.extend({
             let graphics = entity.getComponent('graphics')
             const pb = body.chassis.getComponent('physics').body
 
+            let distance = 0
+
+            if (body.lastPosition === undefined) {
+                body.lastPosition = pb.position
+            } else {
+                distance = p2.vec2.distance(body.lastPosition, pb.position)
+                body.lastPosition = pb.position
+            }
+
+            body.fitness += distance
+
             if (pb.callbackInitialized === undefined) {
                 pb.world.on('beginContact', (event) => {
-                    body.fitness -= 7000000
                     let bodyA = event.bodyA
                     let bodyB = event.bodyB
-                    if ((bodyA.id === pb.id) || (bodyB.id === pb.id)) {
-                        pb.allowSleep = true
+                    let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
+                    if ((bodyA.id === pb.id) || (bodyB.id === pb.id) && vel > 1.0) {
                         pb.force = [0, 0]
-                        pb.sleep()
                     }
                 })
                 pb.callbackInitialized = true
@@ -67,7 +76,7 @@ export default CES.System.extend({
                     drawArea = body.graphics
                 }
                 drawArea.clear()
-                drawArea.lineStyle(2, 0x0000FF, 0xFF);
+                drawArea.lineStyle(5, 0x0000FF, 0xFF);
             }
             for (let i = 0; i < body.sensors.length; i++) {
                 body.sensors[i].cast(pb.position, pb.angle)
@@ -84,9 +93,9 @@ export default CES.System.extend({
                 this.input[i] = body.sensors[i].shortest.distance
             }
             this.input[body.sensors.length - 1] = normalizeAngle(pb.angle)
-            let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
+            let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
             let isVelNaN = isNaN(vel)
             for (let i = 0; i < output.length; i++) {
                 if (isVelNaN || isNaN(output[i])) {
@@ -111,7 +120,6 @@ export default CES.System.extend({
             }
             let speed = indexOfMaximum(output.slice(2, output.length)) - 1
             body.backWheel.engineForce = dir * speed * 9000
-            body.fitness += speed * dt
         })
     }
 })

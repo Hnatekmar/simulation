@@ -35,8 +35,8 @@ export default CES.System.extend({
                     Wall(550, 0, 20, 8000, this.world)
                 ]),
                 'possibleParts': {
-                    'up': ['Cross', 'I'],
-                    'down': ['Cross', 'T', 'I']
+                    'up': ['I'],
+                    'down': ['I']
                 }
             },
             'I left': {
@@ -153,7 +153,6 @@ export default CES.System.extend({
     },
     moveCarBackToScreen: function (direction) {
         let body = this.car.getComponent('physics').body
-        this.car.getComponent('car').fitness *= 2
         let newPos = [0, 0]
         if (direction === 'up') {
             newPos = [body.position[0], 0]

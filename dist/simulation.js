@@ -198,7 +198,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 60.0, dt, 10);
+    this.p2World.step(1 / 25.0, dt, 5);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -248,17 +248,25 @@ function normalizeAngle(angle) {
       var body = entity.getComponent('car');
       var graphics = entity.getComponent('graphics');
       var pb = body.chassis.getComponent('physics').body;
+      var distance = 0;
+
+      if (body.lastPosition === undefined) {
+        body.lastPosition = pb.position;
+      } else {
+        distance = external_p2_["vec2"].distance(body.lastPosition, pb.position);
+        body.lastPosition = pb.position;
+      }
+
+      body.fitness += distance;
 
       if (pb.callbackInitialized === undefined) {
         pb.world.on('beginContact', function (event) {
-          body.fitness -= 7000000;
           var bodyA = event.bodyA;
           var bodyB = event.bodyB;
+          var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
 
-          if (bodyA.id === pb.id || bodyB.id === pb.id) {
-            pb.allowSleep = true;
+          if (bodyA.id === pb.id || bodyB.id === pb.id && vel > 1.0) {
             pb.force = [0, 0];
-            pb.sleep();
           }
         });
         pb.callbackInitialized = true;
@@ -289,7 +297,7 @@ function normalizeAngle(angle) {
         }
 
         drawArea.clear();
-        drawArea.lineStyle(2, 0x0000FF, 0xFF);
+        drawArea.lineStyle(5, 0x0000FF, 0xFF);
       }
 
       for (var _i = 0; _i < body.sensors.length; _i++) {
@@ -309,9 +317,9 @@ function normalizeAngle(angle) {
       }
 
       _this.input[body.sensors.length - 1] = normalizeAngle(pb.angle);
-      var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
       var output = body.genome.activate(_this.input);
+      var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
       var isVelNaN = isNaN(vel);
 
       for (var _i2 = 0; _i2 < output.length; _i2++) {
@@ -340,7 +348,6 @@ function normalizeAngle(angle) {
 
       var speed = indexOfMaximum(output.slice(2, output.length)) - 1;
       body.backWheel.engineForce = dir * speed * 9000;
-      body.fitness += speed * dt;
     });
   }
 }));
@@ -511,10 +518,12 @@ function () {
   car.addToWorld(p2World);
   carComponent.sensors = [];
 
-  for (var startingAngle = 0; startingAngle <= 360; startingAngle += 20) {
-    carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
+  for (var _startingAngle = 210; _startingAngle <= 330; _startingAngle += 30) {
+    carComponent.sensors.push(new raySensor_Sensor([Math.cos(_startingAngle * (Math.PI / 180)), Math.sin(_startingAngle * (Math.PI / 180))], [body.id], p2World));
   }
 
+  var startingAngle = 90;
+  carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
   return entity;
 });
 // CONCATENATED MODULE: ./entities/wall.js
@@ -643,8 +652,8 @@ function getDirection(x, y, w, h) {
       'I': {
         'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
         'possibleParts': {
-          'up': ['Cross', 'I'],
-          'down': ['Cross', 'T', 'I']
+          'up': ['I'],
+          'down': ['I']
         }
       },
       'I left': {
@@ -734,7 +743,6 @@ function getDirection(x, y, w, h) {
   },
   moveCarBackToScreen: function moveCarBackToScreen(direction) {
     var body = this.car.getComponent('physics').body;
-    this.car.getComponent('car').fitness *= 2;
     var newPos = [0, 0];
 
     if (direction === 'up') {

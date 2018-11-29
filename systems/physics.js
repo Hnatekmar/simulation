@@ -23,7 +23,7 @@ export default CES.System.extend({
       })
   },
   update: function (dt) {
-    this.p2World.step(1 / 60.0, dt, 10)
+    this.p2World.step(1 / 25.0, dt, 5)
     this.world.getEntities('graphics', 'physics').forEach((entity) => {
       const body = entity.getComponent('physics').body
       const position = body.position
