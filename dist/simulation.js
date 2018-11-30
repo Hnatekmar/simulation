@@ -198,7 +198,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 25.0, dt, 5);
+    this.p2World.step(1 / 60.0, dt, 10);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -870,11 +870,21 @@ function () {
       });
     }
   }, {
+    key: "fitness",
+    value: function fitness() {
+      return this.car.getComponent('car').fitness;
+    }
+  }, {
+    key: "isRunning",
+    value: function isRunning() {
+      return this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING;
+    }
+  }, {
     key: "evalGenome",
     value: function evalGenome(dt, genome, startingPiece) {
       this.evaluate(genome, startingPiece);
 
-      while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING) {
+      while (this.isRunning()) {
         this.update(dt);
       }
 
@@ -891,7 +901,7 @@ function () {
       this.acc += dt;
       var currentFitness = this.car.getComponent('car').fitness;
 
-      if (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING) {
+      if (this.isRunning()) {
         this.world.update(dt);
       } else {
         this.onFinish(currentFitness);

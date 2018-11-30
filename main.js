@@ -74,9 +74,17 @@ export default class Simulation {
         )
     }
 
+    fitness() {
+        return this.car.getComponent('car').fitness
+    }
+
+    isRunning() {
+        return this.acc < this.time && (this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING)
+    }
+
     evalGenome(dt, genome, startingPiece) {
         this.evaluate(genome, startingPiece)
-        while (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING) {
+        while (this.isRunning()) {
             this.update(dt)
         }
         return this.car.getComponent('car').fitness
@@ -89,7 +97,7 @@ export default class Simulation {
         if (this.lastDt === null) this.lastDt = dt
         this.acc += dt
         let currentFitness = this.car.getComponent('car').fitness
-        if (this.acc < this.time && this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING) {
+        if (this.isRunning()) {
             this.world.update(dt)
         } else {
             this.onFinish(currentFitness)
