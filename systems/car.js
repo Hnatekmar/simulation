@@ -51,6 +51,7 @@ export default CES.System.extend({
                     let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
                     if ((bodyA.id === pb.id) || (bodyB.id === pb.id) && vel > 1.0) {
                         pb.force = [0, 0]
+                        pb.velocity = [0, 0]
                     }
                 })
                 pb.callbackInitialized = true
@@ -58,7 +59,7 @@ export default CES.System.extend({
 
             if (this.input === undefined) {
                 this.input = []
-                for (let i = 0; i <= body.sensors.length; i++) {
+                for (let i = 0; i < body.sensors.length; i++) {
                     this.input.push(0)
                 }
                 body.backWheel.setBrakeForce(0)
@@ -92,7 +93,6 @@ export default CES.System.extend({
                 body.sensors[i].shortest.distance /= 800.0
                 this.input[i] = body.sensors[i].shortest.distance
             }
-            this.input[body.sensors.length - 1] = normalizeAngle(pb.angle)
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))

@@ -267,6 +267,7 @@ function normalizeAngle(angle) {
 
           if (bodyA.id === pb.id || bodyB.id === pb.id && vel > 1.0) {
             pb.force = [0, 0];
+            pb.velocity = [0, 0];
           }
         });
         pb.callbackInitialized = true;
@@ -275,7 +276,7 @@ function normalizeAngle(angle) {
       if (_this.input === undefined) {
         _this.input = [];
 
-        for (var i = 0; i <= body.sensors.length; i++) {
+        for (var i = 0; i < body.sensors.length; i++) {
           _this.input.push(0);
         }
 
@@ -316,7 +317,6 @@ function normalizeAngle(angle) {
         _this.input[_i] = body.sensors[_i].shortest.distance;
       }
 
-      _this.input[body.sensors.length - 1] = normalizeAngle(pb.angle);
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
       var output = body.genome.activate(_this.input);
       var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
