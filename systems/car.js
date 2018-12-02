@@ -33,17 +33,6 @@ export default CES.System.extend({
             let graphics = entity.getComponent('graphics')
             const pb = body.chassis.getComponent('physics').body
 
-            let distance = 0
-
-            if (body.lastPosition === undefined) {
-                body.lastPosition = pb.position
-            } else {
-                distance = p2.vec2.distance(body.lastPosition, pb.position)
-                body.lastPosition = pb.position
-            }
-
-            body.fitness += distance
-
             if (pb.callbackInitialized === undefined) {
                 pb.world.on('beginContact', (event) => {
                     let bodyA = event.bodyA

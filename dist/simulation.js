@@ -248,16 +248,6 @@ function normalizeAngle(angle) {
       var body = entity.getComponent('car');
       var graphics = entity.getComponent('graphics');
       var pb = body.chassis.getComponent('physics').body;
-      var distance = 0;
-
-      if (body.lastPosition === undefined) {
-        body.lastPosition = pb.position;
-      } else {
-        distance = external_p2_["vec2"].distance(body.lastPosition, pb.position);
-        body.lastPosition = pb.position;
-      }
-
-      body.fitness += distance;
 
       if (pb.callbackInitialized === undefined) {
         pb.world.on('beginContact', function (event) {
@@ -625,6 +615,7 @@ var external_chance_default = /*#__PURE__*/__webpack_require__.n(external_chance
 
 
 
+
 function getDirection(x, y, w, h) {
   if (x >= w) return 'right';
   if (y >= h) return 'up';
@@ -634,9 +625,13 @@ function getDirection(x, y, w, h) {
 }
 
 /* harmony default export */ var roadDirector = (external_ces_["System"].extend({
+  getRoomID: function getRoomID() {
+    return this.position[0] + ',' + this.position[1];
+  },
   setup: function setup(world, startingPiece) {
     var _this = this;
 
+    this.rooms = {};
     this.STARTING_PIECE = startingPiece || 'Box';
     this.world = world;
     this.rng = new external_chance_default.a('RNG0,0');
@@ -702,10 +697,18 @@ function getDirection(x, y, w, h) {
         _this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
       }
     });
+    this.rooms[this.getRoomID()] = {
+      entryPoint: [400, 400],
+      distance: 0
+    };
   },
   reset: function reset() {
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
+    this.rooms[this.getRoomID()] = {
+      entryPoint: [400, 400],
+      distance: 0
+    };
     this.currentPart['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
     this.currentPart = this.parts[this.STARTING_PIECE];
     this.currentPart['group'].moveAbsolute(0, 0);
@@ -756,18 +759,27 @@ function getDirection(x, y, w, h) {
     }
 
     body.position = newPos;
+    this.rooms[this.getRoomID()] = {
+      entryPoint: body.position,
+      distance: 0
+    };
   },
   update: function update(dt) {
+    var _this2 = this;
+
     if (this.currentPart === undefined) {
       this.currentPart = this.parts[this.STARTING_PIECE];
     }
 
     var pos = this.getCarPosition();
+    this.rooms[this.getRoomID()].distance = external_p2_["vec2"].distance(this.rooms[this.getRoomID()].entryPoint, pos);
+    this.car.getComponent('car').fitness = 0;
+    Object.keys(this.rooms).forEach(function (key) {
+      _this2.car.getComponent('car').fitness += _this2.rooms[key].distance;
+    });
 
     if (pos !== null) {
-      var x = pos[0];
-      var y = pos[1];
-      var direction = getDirection(x, y, 800, 800);
+      var direction = getDirection(pos[0], pos[1], 800, 800);
 
       if (direction !== 'onScreen') {
         this.swapNextRoadPart(direction);

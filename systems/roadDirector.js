@@ -2,6 +2,7 @@ import * as CES from 'ces'
 import Wall from '../entities/wall.js'
 import RoadPart from '../entities/roadPart.js'
 import Chance from 'chance'
+import * as p2 from 'p2'
 
 function getDirection (x, y, w, h) {
     if (x >= w) return 'right'
@@ -13,7 +14,11 @@ function getDirection (x, y, w, h) {
 
 
 export default CES.System.extend({
+    getRoomID: function () {
+        return this.position[0] + ',' + this.position[1]
+    },
     setup: function (world, startingPiece) {
+        this.rooms = {}
         this.STARTING_PIECE = startingPiece || 'Box'
         this.world = world
         this.rng = new Chance('RNG0,0')
@@ -115,10 +120,18 @@ export default CES.System.extend({
                 this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000)
             }
         })
+        this.rooms[this.getRoomID()] = {
+            entryPoint: [400, 400],
+            distance: 0
+        }
     },
     reset: function () {
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
+        this.rooms[this.getRoomID()] = {
+            entryPoint: [400, 400],
+            distance: 0
+        }
         this.currentPart['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000)
         this.currentPart = this.parts[this.STARTING_PIECE]
         this.currentPart['group'].moveAbsolute(0, 0)
@@ -164,16 +177,23 @@ export default CES.System.extend({
             newPos = [0, body.position[1]]
         }
         body.position = newPos
+        this.rooms[this.getRoomID()] = {
+            entryPoint: body.position,
+            distance: 0
+        }
     },
     update: function (dt) {
         if (this.currentPart === undefined) {
             this.currentPart = this.parts[this.STARTING_PIECE]
         }
         let pos = this.getCarPosition()
+        this.rooms[this.getRoomID()].distance = p2.vec2.distance(this.rooms[this.getRoomID()].entryPoint, pos)
+        this.car.getComponent('car').fitness = 0
+        Object.keys(this.rooms).forEach((key) => {
+            this.car.getComponent('car').fitness += this.rooms[key].distance
+        })
         if (pos !== null) {
-            let x = pos[0]
-            let y = pos[1]
-            let direction = getDirection(x, y, 800, 800)
+            let direction = getDirection(pos[0], pos[1], 800, 800)
             if (direction !== 'onScreen') {
                 this.swapNextRoadPart(direction)
             }
