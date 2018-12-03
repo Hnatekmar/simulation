@@ -178,7 +178,7 @@ export default CES.System.extend({
         }
         body.position = newPos
         this.rooms[this.getRoomID()] = {
-            entryPoint: body.position,
+            entryPoint: body.position.slice(0),
             distance: 0
         }
     },

@@ -306,7 +306,7 @@ function normalizeAngle(angle) {
         }
 
         body.sensors[_i].shortest.distance /= 800.0;
-        _this.input[_i] = 1 - body.sensors[_i].shortest.distance;
+        _this.input[_i] = body.sensors[_i].shortest.distance;
       }
 
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
@@ -763,7 +763,7 @@ function getDirection(x, y, w, h) {
 
     body.position = newPos;
     this.rooms[this.getRoomID()] = {
-      entryPoint: body.position,
+      entryPoint: body.position.slice(0),
       distance: 0
     };
   },

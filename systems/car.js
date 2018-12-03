@@ -82,7 +82,7 @@ export default CES.System.extend({
                         body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
                 }
                 body.sensors[i].shortest.distance /= 800.0
-                this.input[i] = 1 - body.sensors[i].shortest.distance
+                this.input[i] = body.sensors[i].shortest.distance
             }
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
