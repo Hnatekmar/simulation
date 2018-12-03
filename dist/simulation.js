@@ -338,8 +338,7 @@ function normalizeAngle(angle) {
         }
       }
 
-      var speed = 2; // indexOfMaximum(output.slice(2, output.length)) - 1
-
+      var speed = indexOfMaximum(output.slice(2, output.length)) - 1;
       body.backWheel.engineForce = dir * speed * 9000;
     });
   }
