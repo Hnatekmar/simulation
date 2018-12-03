@@ -98,7 +98,7 @@ export default CES.System.extend({
                     return
                 }
             }
-            let steeringChoice = indexOfMaximum(output.slice(0, 3))
+            let steeringChoice = indexOfMaximum(output.slice(0, 2))
             let dir = -1
             if (steeringChoice === 0) {
                 if (body.frontWheel.steerValue < (Math.PI / 180.0) * MAXIMUM_STEER) {
@@ -109,7 +109,8 @@ export default CES.System.extend({
                     body.frontWheel.steerValue -= (Math.PI / 180.0) * ROTATION_PER_SECOND * dt
                 }
             }
-            let speed = indexOfMaximum(output.slice(2, output.length)) - 1
+            let speed = indexOfMaximum(output.slice(2, output.length))
+            if (speed === 0) speed = -1
             body.backWheel.engineForce = dir * speed * 9000
         })
     }

@@ -56,6 +56,7 @@ export default class Simulation {
             this.world.addSystem(this.roadDirector)
         } else {
             this.car.getComponent('car').genome = this.genome
+            this.roadDirector.reset(startingPiece)
         }
         this.lastDt = 0
     }

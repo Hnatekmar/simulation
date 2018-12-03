@@ -325,7 +325,7 @@ function normalizeAngle(angle) {
         }
       }
 
-      var steeringChoice = indexOfMaximum(output.slice(0, 3));
+      var steeringChoice = indexOfMaximum(output.slice(0, 2));
       var dir = -1;
 
       if (steeringChoice === 0) {
@@ -338,7 +338,8 @@ function normalizeAngle(angle) {
         }
       }
 
-      var speed = indexOfMaximum(output.slice(2, output.length)) - 1;
+      var speed = indexOfMaximum(output.slice(2, output.length));
+      if (speed === 0) speed = -1;
       body.backWheel.engineForce = dir * speed * 9000;
     });
   }
@@ -704,7 +705,8 @@ function getDirection(x, y, w, h) {
       distance: 0
     };
   },
-  reset: function reset() {
+  reset: function reset(startingPiece) {
+    this.STARTING_PIECE = startingPiece || this.STARTING_PIECE;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
     this.rooms[this.getRoomID()] = {
@@ -866,6 +868,7 @@ function () {
         this.world.addSystem(this.roadDirector);
       } else {
         this.car.getComponent('car').genome = this.genome;
+        this.roadDirector.reset(startingPiece);
       }
 
       this.lastDt = 0;

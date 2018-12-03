@@ -125,7 +125,8 @@ export default CES.System.extend({
             distance: 0
         }
     },
-    reset: function () {
+    reset: function (startingPiece) {
+        this.STARTING_PIECE = startingPiece || this.STARTING_PIECE
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
         this.rooms[this.getRoomID()] = {
