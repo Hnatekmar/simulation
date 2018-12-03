@@ -2,7 +2,7 @@ import * as CES from 'ces'
 import * as p2 from 'p2'
 import * as PIXI from 'pixi.js'
 
-const MAXIMUM_STEER = 80
+const MAXIMUM_STEER = 45
 const ROTATION_PER_SECOND = MAXIMUM_STEER
 function indexOfMaximum (arr) {
     let index = -1
@@ -40,7 +40,9 @@ export default CES.System.extend({
                     let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
                     if ((bodyA.id === pb.id) || (bodyB.id === pb.id) && vel > 1.0) {
                         pb.force = [0, 0]
-                        pb.velocity = [0, 0]
+                        pb.allowSleep = true
+                        pb.force = [0, 0]
+                        pb.sleep()
                     }
                 })
                 pb.callbackInitialized = true
@@ -80,7 +82,7 @@ export default CES.System.extend({
                         body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
                 }
                 body.sensors[i].shortest.distance /= 800.0
-                this.input[i] = body.sensors[i].shortest.distance
+                this.input[i] = 1 - body.sensors[i].shortest.distance
             }
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
@@ -96,7 +98,7 @@ export default CES.System.extend({
                     return
                 }
             }
-            let steeringChoice = indexOfMaximum(output.slice(0, 2))
+            let steeringChoice = indexOfMaximum(output.slice(0, 3))
             let dir = -1
             if (steeringChoice === 0) {
                 if (body.frontWheel.steerValue < (Math.PI / 180.0) * MAXIMUM_STEER) {
@@ -107,7 +109,7 @@ export default CES.System.extend({
                     body.frontWheel.steerValue -= (Math.PI / 180.0) * ROTATION_PER_SECOND * dt
                 }
             }
-            let speed = indexOfMaximum(output.slice(2, output.length)) - 1
+            let speed = 2 // indexOfMaximum(output.slice(2, output.length)) - 1
             body.backWheel.engineForce = dir * speed * 9000
         })
     }

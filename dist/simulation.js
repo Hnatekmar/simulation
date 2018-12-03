@@ -212,7 +212,7 @@ var external_p2_ = __webpack_require__(0);
 
 
 
-var MAXIMUM_STEER = 80;
+var MAXIMUM_STEER = 45;
 var ROTATION_PER_SECOND = MAXIMUM_STEER;
 
 function indexOfMaximum(arr) {
@@ -257,7 +257,9 @@ function normalizeAngle(angle) {
 
           if (bodyA.id === pb.id || bodyB.id === pb.id && vel > 1.0) {
             pb.force = [0, 0];
-            pb.velocity = [0, 0];
+            pb.allowSleep = true;
+            pb.force = [0, 0];
+            pb.sleep();
           }
         });
         pb.callbackInitialized = true;
@@ -304,7 +306,7 @@ function normalizeAngle(angle) {
         }
 
         body.sensors[_i].shortest.distance /= 800.0;
-        _this.input[_i] = body.sensors[_i].shortest.distance;
+        _this.input[_i] = 1 - body.sensors[_i].shortest.distance;
       }
 
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
@@ -323,7 +325,7 @@ function normalizeAngle(angle) {
         }
       }
 
-      var steeringChoice = indexOfMaximum(output.slice(0, 2));
+      var steeringChoice = indexOfMaximum(output.slice(0, 3));
       var dir = -1;
 
       if (steeringChoice === 0) {
@@ -336,7 +338,8 @@ function normalizeAngle(angle) {
         }
       }
 
-      var speed = indexOfMaximum(output.slice(2, output.length)) - 1;
+      var speed = 2; // indexOfMaximum(output.slice(2, output.length)) - 1
+
       body.backWheel.engineForce = dir * speed * 9000;
     });
   }
