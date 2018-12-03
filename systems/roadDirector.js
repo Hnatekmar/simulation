@@ -117,7 +117,7 @@ export default CES.System.extend({
         }
         Object.keys(this.parts).forEach((key) => {
             if (key !== this.STARTING_PIECE) {
-                this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000)
+                this.parts[key]['group'].moveAbsolute(50000, 50000)
             }
         })
         this.rooms[this.getRoomID()] = {
@@ -129,11 +129,12 @@ export default CES.System.extend({
         this.STARTING_PIECE = startingPiece || this.STARTING_PIECE
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
+        this.rooms = {}
         this.rooms[this.getRoomID()] = {
             entryPoint: [400, 400],
             distance: 0
         }
-        this.currentPart['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000)
+        this.currentPart['group'].moveAbsolute(50000,50000)
         this.currentPart = this.parts[this.STARTING_PIECE]
         this.currentPart['group'].moveAbsolute(0, 0)
     },

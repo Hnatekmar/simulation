@@ -697,7 +697,7 @@ function getDirection(x, y, w, h) {
     };
     Object.keys(this.parts).forEach(function (key) {
       if (key !== _this.STARTING_PIECE) {
-        _this.parts[key]['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
+        _this.parts[key]['group'].moveAbsolute(50000, 50000);
       }
     });
     this.rooms[this.getRoomID()] = {
@@ -709,11 +709,12 @@ function getDirection(x, y, w, h) {
     this.STARTING_PIECE = startingPiece || this.STARTING_PIECE;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
+    this.rooms = {};
     this.rooms[this.getRoomID()] = {
       entryPoint: [400, 400],
       distance: 0
     };
-    this.currentPart['group'].moveAbsolute(Math.sin(Math.random()) * 50000, Math.cos(Math.random()) * 50000);
+    this.currentPart['group'].moveAbsolute(50000, 50000);
     this.currentPart = this.parts[this.STARTING_PIECE];
     this.currentPart['group'].moveAbsolute(0, 0);
   },
