@@ -198,7 +198,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 60.0, dt, 10);
+    this.p2World.step(1 / 60.0, dt, 5);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -290,7 +290,7 @@ function normalizeAngle(angle) {
         }
 
         drawArea.clear();
-        drawArea.lineStyle(5, 0x0000FF, 0xFF);
+        drawArea.lineStyle(5, 0xFFFFFF, 0xFF);
       }
 
       for (var _i = 0; _i < body.sensors.length; _i++) {
@@ -339,7 +339,11 @@ function normalizeAngle(angle) {
       }
 
       var speed = indexOfMaximum(output.slice(2, output.length));
-      if (speed === 0) speed = -1;
+
+      if (speed === 0) {
+        speed = -1;
+      }
+
       body.backWheel.engineForce = dir * speed * 9000;
     });
   }
@@ -670,6 +674,13 @@ function getDirection(x, y, w, h) {
           'down': ['Cross', 'T', 'I'],
           'left': ['Cross', 'T'],
           'right': ['Cross', 'T']
+        }
+      },
+      'I with obstructions': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world), wall(300, 100, 100, 20, this.world), wall(500, 600, 100, 20, this.world)]),
+        'possibleParts': {
+          'up': ['I with obstructions'],
+          'down': ['I with obstructions']
         }
       },
       'T': {

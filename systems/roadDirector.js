@@ -71,6 +71,18 @@ export default CES.System.extend({
                     'right': ['Cross', 'T']
                 }
             },
+            'I with obstructions': {
+                'group': RoadPart(0, 0, this.world, [
+                    Wall(250, 0, 20, 8000, this.world),
+                    Wall(550, 0, 20, 8000, this.world),
+                    Wall(300, 100, 100, 20, this.world),
+                    Wall(500, 600, 100, 20, this.world),
+                ]),
+                'possibleParts': {
+                    'up': ['I with obstructions'],
+                    'down': ['I with obstructions']
+                }
+            },
             'T': {
                 'group': RoadPart(0, 0, this.world, [
                     Wall(250, 700, 20, 400, this.world),

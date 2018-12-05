@@ -68,7 +68,7 @@ export default CES.System.extend({
                     drawArea = body.graphics
                 }
                 drawArea.clear()
-                drawArea.lineStyle(5, 0x0000FF, 0xFF);
+                drawArea.lineStyle(5, 0xFFFFFF, 0xFF);
             }
             for (let i = 0; i < body.sensors.length; i++) {
                 body.sensors[i].cast(pb.position, pb.angle)
@@ -110,7 +110,9 @@ export default CES.System.extend({
                 }
             }
             let speed = indexOfMaximum(output.slice(2, output.length))
-            if (speed === 0) speed = -1
+            if (speed === 0) {
+                speed = -1
+            }
             body.backWheel.engineForce = dir * speed * 9000
         })
     }
