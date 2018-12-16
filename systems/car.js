@@ -118,6 +118,7 @@ export default CES.System.extend({
                 speed = -1
             }
             body.backWheel.engineForce = dir * speed * 9000
+            if (drawArea === undefined) return
             drawArea.lineStyle(5, 0x00FF00, 0xFF);
             drawArea.moveTo(pb.position[0], pb.position[1])
             drawArea.lineTo(pb.position[0] + Math.cos( 0) - Math.sin(body.frontWheel.steerValue) * 100,
