@@ -27,7 +27,11 @@ function normalizeAngle(angle){
 
 // noinspection JSUnusedLocalSymbols
 export default CES.System.extend({
+    acc: 0,
     update: function (dt) {
+        this.acc += dt
+        if (this.acc < 0.03) return
+        this.acc = 0
         this.world.getEntities('car').forEach((entity) => {
             const body = entity.getComponent('car')
             let graphics = entity.getComponent('graphics')
@@ -114,6 +118,10 @@ export default CES.System.extend({
                 speed = -1
             }
             body.backWheel.engineForce = dir * speed * 9000
+            drawArea.lineStyle(5, 0x00FF00, 0xFF);
+            drawArea.moveTo(pb.position[0], pb.position[1])
+            drawArea.lineTo(pb.position[0] + Math.cos( 0) - Math.sin(body.frontWheel.steerValue) * 100,
+                            pb.position[1] - Math.sin(0) + Math.cos(body.frontWheel.steerValue) * 100)
         })
     }
 })

@@ -111,6 +111,7 @@ export default class Simulation {
     destroy() {
         if (this.world !== undefined) {
             this.car.getComponent('car').fitness = 0
+            this.car.getComponent('car').frontWheel.steerValue = 0
             let body = this.car.getComponent('physics').body
             fillNaN(body, 0.0)
             body.allowSleep = false

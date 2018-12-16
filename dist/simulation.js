@@ -198,7 +198,7 @@ var external_p2_ = __webpack_require__(0);
     });
   },
   update: function update(dt) {
-    this.p2World.step(1 / 60.0, dt, 5);
+    this.p2World.step(0.016, dt, 5);
     this.world.getEntities('graphics', 'physics').forEach(function (entity) {
       var body = entity.getComponent('physics').body;
       var position = body.position;
@@ -241,9 +241,13 @@ function normalizeAngle(angle) {
 
 
 /* harmony default export */ var systems_car = (external_ces_["System"].extend({
+  acc: 0,
   update: function update(dt) {
     var _this = this;
 
+    this.acc += dt;
+    if (this.acc < 0.03) return;
+    this.acc = 0;
     this.world.getEntities('car').forEach(function (entity) {
       var body = entity.getComponent('car');
       var graphics = entity.getComponent('graphics');
@@ -345,6 +349,9 @@ function normalizeAngle(angle) {
       }
 
       body.backWheel.engineForce = dir * speed * 9000;
+      drawArea.lineStyle(5, 0x00FF00, 0xFF);
+      drawArea.moveTo(pb.position[0], pb.position[1]);
+      drawArea.lineTo(pb.position[0] + Math.cos(0) - Math.sin(body.frontWheel.steerValue) * 100, pb.position[1] - Math.sin(0) + Math.cos(body.frontWheel.steerValue) * 100);
     });
   }
 }));
@@ -945,6 +952,7 @@ function () {
     value: function destroy() {
       if (this.world !== undefined) {
         this.car.getComponent('car').fitness = 0;
+        this.car.getComponent('car').frontWheel.steerValue = 0;
         var body = this.car.getComponent('physics').body;
         fillNaN(body, 0.0);
         body.allowSleep = false;
