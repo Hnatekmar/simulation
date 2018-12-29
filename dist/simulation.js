@@ -1,1018 +1,978 @@
-"use strict";Date=function(r){function e(e,n,t,a,u,i,f){var o;switch(arguments.length){case 0:o=new r(0);break;case 1:o=new r(e);break;default:t=t||1,a=a||0,u=u||0,i=i||0,f=f||0,o=new r(e,n,t,a,u,i,f)}return o}return e.parse=r.parse,e.UTC=r.UTC,e.toString=r.toString,e.prototype=r.prototype,e.now=function(){return 0},e}(Date),Math.exp=function(){function r(r){var e=new ArrayBuffer(8);return new Float64Array(e)[0]=r,0|new Uint32Array(e)[1]}function e(r){var e=new ArrayBuffer(8);return new Float64Array(e)[0]=r,new Uint32Array(e)[0]}function n(r,e){var n=new ArrayBuffer(8);return new Uint32Array(n)[1]=r,new Uint32Array(n)[0]=e,new Float64Array(n)[0]}var t=[.5,-.5],a=[.6931471803691238,-.6931471803691238],u=[1.9082149292705877e-10,-1.9082149292705877e-10];return function(i){var f,o=0,c=0,w=0,y=r(i),s=y>>31&1;if((y&=2147483647)>=1082535490){if(y>=2146435072)return isNaN(i)?i:0==s?i:0;if(i>709.782712893384)return 1/0;if(i<-745.1332191019411)return 0}if(y>1071001154){if(y<1072734898){if(1==i)return Math.E;c=i-a[s],w=u[s],o=1-s-s}else o=1.4426950408889634*i+t[s]|0,f=o,c=i-f*a[0],w=f*u[0];i=c-w}else{if(y<1043333120)return 1+i;o=0}f=i*i;var v=i-f*(.16666666666666602+f*(f*(6613756321437934e-20+f*(4.1381367970572385e-8*f-16533902205465252e-22))-.0027777777777015593));if(0==o)return 1-(i*v/(v-2)-i);var A=1-(w-i*v/(2-v)-c);return o>=-1021?A=n((o<<20)+r(A),e(A)):(A=n((o+1e3<<20)+r(A),e(A)),A*=9.332636185032189e-302)}}(),Math.random=function(){var r,e,n,t;return r=.8725217853207141,e=.520505596883595,n=.22893249243497849,t=1,function(){var a=2091639*r+2.3283064365386963e-10*t;return r=e,e=n,t=0|a,n=a-t}}(),Object.keys=function(r){return function(e){var n;return n=r(e),n.sort(),n}}(Object.keys);(function webpackUniversalModuleDefinition(root, factory) {
-  if (typeof exports === 'object' && typeof module === 'object') module.exports = factory();else if (typeof define === 'function' && define.amd) define([], factory);else if (typeof exports === 'object') exports["simulation"] = factory();else root["simulation"] = factory();
-})(global, function () {
-  return (/******/function (modules) {
-      // webpackBootstrap
-      /******/ // The module cache
-      /******/var installedModules = {};
-      /******/
-      /******/ // The require function
-      /******/function __webpack_require__(moduleId) {
-        /******/
-        /******/ // Check if module is in cache
-        /******/if (installedModules[moduleId]) {
-          /******/return installedModules[moduleId].exports;
-          /******/
-        }
-        /******/ // Create a new module (and put it into the cache)
-        /******/var module = installedModules[moduleId] = {
-          /******/i: moduleId,
-          /******/l: false,
-          /******/exports: {}
-          /******/ };
-        /******/
-        /******/ // Execute the module function
-        /******/modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-        /******/
-        /******/ // Flag the module as loaded
-        /******/module.l = true;
-        /******/
-        /******/ // Return the exports of the module
-        /******/return module.exports;
-        /******/
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["simulation"] = factory();
+	else
+		root["simulation"] = factory();
+})(global, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = require("p2");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("ces");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("pixi.js");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("chance");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("assert");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: external "pixi.js"
+var external_pixi_js_ = __webpack_require__(2);
+
+// EXTERNAL MODULE: external "ces"
+var external_ces_ = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./systems/graphics.js
+
+ // noinspection JSUnusedLocalSymbols
+
+/* harmony default export */ var systems_graphics = (external_ces_["System"].extend({
+  setCanvas: function setCanvas(canvas) {
+    if (this.renderer !== undefined) return;
+    this.renderer = new external_pixi_js_["Application"]({
+      view: canvas,
+      antialias: true,
+      width: 800,
+      height: 800
+    });
+    this.canvas = canvas;
+    this.renderer.ticker.stop();
+  },
+  addedToWorld: function addedToWorld(world) {
+    var _this = this;
+
+    world.entityAdded('graphics').add(function (entity) {
+      _this.renderer.stage.addChild(entity.getComponent('graphics').container);
+    });
+    world.entityRemoved('graphics').add(function (entity) {
+      _this.renderer.stage.removeChild(entity.getComponent('graphics').container);
+    });
+  },
+  update: function update(dt) {
+    if (this.draw) {
+      this.renderer.ticker.update();
+    }
+  }
+}));
+// EXTERNAL MODULE: external "p2"
+var external_p2_ = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./systems/physics.js
+
+
+/* harmony default export */ var physics = (external_ces_["System"].extend({
+  addedToWorld: function addedToWorld(world) {
+    var _this = this;
+
+    this._super(world); // this.engine = Matter.Engine.create()
+    // this.engine.b2World.gravity.x = 0
+    // this.engine.b2World.gravity.y = 0
+
+
+    this.p2World = new external_p2_["World"]({
+      gravity: [0, 0]
+    });
+    world.entityAdded('physics').add(function (entity) {
+      var physicsComponent = entity.getComponent('physics');
+      physicsComponent.world = _this.p2World;
+
+      _this.p2World.addBody(physicsComponent.body);
+    });
+    world.entityRemoved('physics').add(function (entity) {
+      _this.p2World.removeBody(entity.getComponent('physics').body);
+    });
+  },
+  update: function update(dt) {
+    this.p2World.step(0.016, dt, 5);
+    this.world.getEntities('graphics', 'physics').forEach(function (entity) {
+      var body = entity.getComponent('physics').body;
+      var position = body.position;
+      var graphicsObject = entity.getComponent('graphics').container;
+      graphicsObject.position.set(position[0], position[1]);
+      graphicsObject.rotation = body.angle;
+    });
+  }
+}));
+// CONCATENATED MODULE: ./systems/car.js
+
+
+
+var MAXIMUM_STEER = 15;
+var ROTATION_PER_SECOND = MAXIMUM_STEER;
+
+function indexOfMaximum(arr) {
+  var index = -1;
+  var maximum = -1;
+
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] > maximum) {
+      maximum = arr[i];
+      index = i;
+    }
+  }
+
+  return index;
+}
+
+function normalizeAngle(angle) {
+  angle = angle % (2 * Math.PI);
+
+  if (angle < 0) {
+    angle += 2 * Math.PI;
+  }
+
+  return angle;
+} // noinspection JSUnusedLocalSymbols
+
+
+/* harmony default export */ var systems_car = (external_ces_["System"].extend({
+  acc: 0,
+  updateSensors: function updateSensors(body, drawArea, draw, pb) {
+    for (var i = 0; i < body.sensors.length; i++) {
+      body.sensors[i].cast(pb.position, pb.angle);
+
+      if (body.sensors[i].shortest.distance === Infinity || body.sensors[i].shortest.distance > 800) {
+        body.sensors[i].shortest.distance = 800;
       }
-      /******/
-      /******/
-      /******/ // expose the modules object (__webpack_modules__)
-      /******/__webpack_require__.m = modules;
-      /******/
-      /******/ // expose the module cache
-      /******/__webpack_require__.c = installedModules;
-      /******/
-      /******/ // define getter function for harmony exports
-      /******/__webpack_require__.d = function (exports, name, getter) {
-        /******/if (!__webpack_require__.o(exports, name)) {
-          /******/Object.defineProperty(exports, name, { enumerable: true, get: getter });
-          /******/
-        }
-        /******/
-      };
-      /******/
-      /******/ // define __esModule on exports
-      /******/__webpack_require__.r = function (exports) {
-        /******/if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-          /******/Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-          /******/
-        }
-        /******/Object.defineProperty(exports, '__esModule', { value: true });
-        /******/
-      };
-      /******/
-      /******/ // create a fake namespace object
-      /******/ // mode & 1: value is a module id, require it
-      /******/ // mode & 2: merge all properties of value into the ns
-      /******/ // mode & 4: return value when already ns object
-      /******/ // mode & 8|1: behave like require
-      /******/__webpack_require__.t = function (value, mode) {
-        /******/if (mode & 1) value = __webpack_require__(value);
-        /******/if (mode & 8) return value;
-        /******/if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
-        /******/var ns = Object.create(null);
-        /******/__webpack_require__.r(ns);
-        /******/Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-        /******/if (mode & 2 && typeof value != 'string') (function (_keys) {
-            for (var key, _index = 0; _index < _keys.length; _index++) {
-              key = _keys[_index];
-              __webpack_require__.d(ns, key, function (key) {
-                return value[key];
-              }.bind(null, key));
-            }
-          })(Object.keys(value)); /******/return ns;
-        /******/
-      };
-      /******/
-      /******/ // getDefaultExport function for compatibility with non-harmony modules
-      /******/__webpack_require__.n = function (module) {
-        /******/var getter = module && module.__esModule ?
-        /******/function getDefault() {
-          return module['default'];
-        } :
-        /******/function getModuleExports() {
-          return module;
-        };
-        /******/__webpack_require__.d(getter, 'a', getter);
-        /******/return getter;
-        /******/
-      };
-      /******/
-      /******/ // Object.prototype.hasOwnProperty.call
-      /******/__webpack_require__.o = function (object, property) {
-        return Object.prototype.hasOwnProperty.call(object, property);
-      };
-      /******/
-      /******/ // __webpack_public_path__
-      /******/__webpack_require__.p = "";
-      /******/
-      /******/
-      /******/ // Load entry module and return exports
-      /******/return __webpack_require__(__webpack_require__.s = 5);
-      /******/
-    }(
-    /************************************************************************/
-    /******/[
-    /* 0 */
-    /***/function (module, exports) {
 
-      module.exports = require("p2");
+      if (draw) {
+        drawArea.moveTo(body.sensors[i].ray.from[0], body.sensors[i].ray.from[1]);
+        drawArea.lineTo(body.sensors[i].ray.from[0] + body.sensors[i].ray.direction[0] * body.sensors[i].shortest.distance, body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance);
+      }
 
-      /***/
-    },
-    /* 1 */
-    /***/function (module, exports) {
+      body.sensors[i].shortest.distance /= 800.0;
+      this.input[i] = body.sensors[i].shortest.distance;
+    }
+  },
+  update: function update(dt) {
+    var _this = this;
 
-      module.exports = require("ces");
+    this.acc = 0;
+    this.world.getEntities('car').forEach(function (entity) {
+      var body = entity.getComponent('car');
+      var graphics = entity.getComponent('graphics');
+      var pb = body.chassis.getComponent('physics').body;
 
-      /***/
-    },
-    /* 2 */
-    /***/function (module, exports) {
+      if (body.genome.positions !== undefined) {
+        var info = body.genome.positions.shift();
+        pb.position = [info[0], info[1]];
+        pb.angle = info[2];
+      }
 
-      module.exports = require("pixi.js");
+      if (pb.callbackInitialized === undefined) {
+        pb.world.on('beginContact', function (event) {
+          var bodyA = event.bodyA;
+          var bodyB = event.bodyB;
+          var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
 
-      /***/
-    },
-    /* 3 */
-    /***/function (module, exports) {
-
-      module.exports = require("chance");
-
-      /***/
-    },
-    /* 4 */
-    /***/function (module, exports) {
-
-      module.exports = require("assert");
-
-      /***/
-    },
-    /* 5 */
-    /***/function (module, __webpack_exports__, __webpack_require__) {
-
-      "use strict";
-
-      __webpack_require__.r(__webpack_exports__);
-
-      // EXTERNAL MODULE: external "pixi.js"
-      var external_pixi_js_ = __webpack_require__(2);
-
-      // EXTERNAL MODULE: external "ces"
-      var external_ces_ = __webpack_require__(1);
-
-      // CONCATENATED MODULE: ./systems/graphics.js
-
-      // noinspection JSUnusedLocalSymbols
-
-      /* harmony default export */var systems_graphics = external_ces_["System"].extend({
-        setCanvas: function setCanvas(canvas) {
-          if (this.renderer !== undefined) return;
-          this.renderer = new external_pixi_js_["Application"]({
-            view: canvas,
-            antialias: true,
-            width: 800,
-            height: 800
-          });
-          this.canvas = canvas;
-          this.renderer.ticker.stop();
-        },
-        addedToWorld: function addedToWorld(world) {
-          var _this = this;
-
-          world.entityAdded('graphics').add(function (entity) {
-            _this.renderer.stage.addChild(entity.getComponent('graphics').container);
-          });
-          world.entityRemoved('graphics').add(function (entity) {
-            _this.renderer.stage.removeChild(entity.getComponent('graphics').container);
-          });
-        },
-        update: function update(dt) {
-          if (this.draw) {
-            this.renderer.ticker.update();
+          if (bodyA.id === pb.id || bodyB.id === pb.id && vel > 1.0) {
+            pb.force = [0, 0];
+            pb.allowSleep = true;
+            pb.force = [0, 0];
+            pb.sleep();
           }
-        }
-      });
-      // EXTERNAL MODULE: external "p2"
-      var external_p2_ = __webpack_require__(0);
-
-      // CONCATENATED MODULE: ./systems/physics.js
-
-
-      /* harmony default export */var physics = external_ces_["System"].extend({
-        addedToWorld: function addedToWorld(world) {
-          var _this = this;
-
-          this._super(world); // this.engine = Matter.Engine.create()
-          // this.engine.b2World.gravity.x = 0
-          // this.engine.b2World.gravity.y = 0
-
-
-          this.p2World = new external_p2_["World"]({
-            gravity: [0, 0]
-          });
-          world.entityAdded('physics').add(function (entity) {
-            var physicsComponent = entity.getComponent('physics');
-            physicsComponent.world = _this.p2World;
-
-            _this.p2World.addBody(physicsComponent.body);
-          });
-          world.entityRemoved('physics').add(function (entity) {
-            _this.p2World.removeBody(entity.getComponent('physics').body);
-          });
-        },
-        update: function update(dt) {
-          this.p2World.step(0.016, dt, 5);
-          this.world.getEntities('graphics', 'physics').forEach(function (entity) {
-            var body = entity.getComponent('physics').body;
-            var position = body.position;
-            var graphicsObject = entity.getComponent('graphics').container;
-            graphicsObject.position.set(position[0], position[1]);
-            graphicsObject.rotation = body.angle;
-          });
-        }
-      });
-      // CONCATENATED MODULE: ./systems/car.js
-
-
-      var MAXIMUM_STEER = 45;
-      var ROTATION_PER_SECOND = MAXIMUM_STEER;
-
-      function indexOfMaximum(arr) {
-        var index = -1;
-        var maximum = -1;
-
-        for (var i = 0; i < arr.length; i++) {
-          if (arr[i] > maximum) {
-            maximum = arr[i];
-            index = i;
-          }
-        }
-
-        return index;
-      }
-
-      function normalizeAngle(angle) {
-        angle = angle % (2 * Math.PI);
-
-        if (angle < 0) {
-          angle += 2 * Math.PI;
-        }
-
-        return angle;
-      } // noinspection JSUnusedLocalSymbols
-
-
-      /* harmony default export */var systems_car = external_ces_["System"].extend({
-        acc: 0,
-        update: function update(dt) {
-          var _this = this;
-
-          this.acc += dt;
-          if (this.acc < 0.03) return;
-          this.acc = 0;
-          this.world.getEntities('car').forEach(function (entity) {
-            var body = entity.getComponent('car');
-            var graphics = entity.getComponent('graphics');
-            var pb = body.chassis.getComponent('physics').body;
-
-            if (pb.callbackInitialized === undefined) {
-              pb.world.on('beginContact', function (event) {
-                var bodyA = event.bodyA;
-                var bodyB = event.bodyB;
-                var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
-
-                if (bodyA.id === pb.id || bodyB.id === pb.id && vel > 1.0) {
-                  pb.force = [0, 0];
-                  pb.allowSleep = true;
-                  pb.force = [0, 0];
-                  pb.sleep();
-                }
-              });
-              pb.callbackInitialized = true;
-            }
-
-            if (_this.input === undefined) {
-              _this.input = [];
-
-              for (var i = 0; i < body.sensors.length; i++) {
-                _this.input.push(0);
-              }
-
-              body.backWheel.setBrakeForce(0);
-              body.frontWheel.setBrakeForce(0);
-              body.frontWheel.setSideFriction(8000);
-              body.backWheel.setSideFriction(6000);
-            }
-
-            var drawArea;
-
-            if (graphics !== undefined) {
-              if (body.graphics === undefined) {
-                drawArea = new external_pixi_js_["Graphics"]();
-                graphics.container.parent.addChild(drawArea);
-                body.graphics = drawArea;
-              } else {
-                drawArea = body.graphics;
-              }
-
-              drawArea.clear();
-              drawArea.lineStyle(5, 0xFFFFFF, 0xFF);
-            }
-
-            for (var _i = 0; _i < body.sensors.length; _i++) {
-              body.sensors[_i].cast(pb.position, pb.angle);
-
-              if (body.sensors[_i].shortest.distance === Infinity || body.sensors[_i].shortest.distance > 800) {
-                body.sensors[_i].shortest.distance = 800;
-              }
-
-              if (graphics !== undefined) {
-                drawArea.moveTo(body.sensors[_i].ray.from[0], body.sensors[_i].ray.from[1]);
-                drawArea.lineTo(body.sensors[_i].ray.from[0] + body.sensors[_i].ray.direction[0] * body.sensors[_i].shortest.distance, body.sensors[_i].ray.from[1] + body.sensors[_i].ray.direction[1] * body.sensors[_i].shortest.distance);
-              }
-
-              body.sensors[_i].shortest.distance /= 800.0;
-              _this.input[_i] = body.sensors[_i].shortest.distance;
-            }
-
-            if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
-            var output = body.genome.activate(_this.input);
-            var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
-            var isVelNaN = isNaN(vel);
-
-            for (var _i2 = 0; _i2 < output.length; _i2++) {
-              if (isVelNaN || isNaN(output[_i2])) {
-                output[_i2] = 0;
-                body.fitness = -9000000;
-                pb.allowSleep = true;
-                pb.force = [0, 0];
-                pb.sleep();
-                return;
-              }
-            }
-
-            var steeringChoice = indexOfMaximum(output.slice(0, 2));
-            var dir = -1;
-
-            if (steeringChoice === 0) {
-              if (body.frontWheel.steerValue < Math.PI / 180.0 * MAXIMUM_STEER) {
-                body.frontWheel.steerValue += Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
-              }
-            } else if (steeringChoice === 1) {
-              if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * MAXIMUM_STEER) {
-                body.frontWheel.steerValue -= Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
-              }
-            }
-
-            var speed = indexOfMaximum(output.slice(2, output.length));
-
-            if (speed === 0) {
-              speed = -1;
-            }
-
-            body.backWheel.engineForce = dir * speed * 9000;
-            if (drawArea === undefined) return;
-            drawArea.lineStyle(5, 0x00FF00, 0xFF);
-            drawArea.moveTo(pb.position[0], pb.position[1]);
-            drawArea.lineTo(pb.position[0] + Math.cos(0) - Math.sin(body.frontWheel.steerValue) * 100, pb.position[1] - Math.sin(0) + Math.cos(body.frontWheel.steerValue) * 100);
-          });
-        }
-      });
-      // CONCATENATED MODULE: ./components/graphics.js
-
-
-      /**
-       * Light wrapper around PIXI.Container
-       */
-
-      /* harmony default export */var components_graphics = external_ces_["Component"].extend({
-        name: 'graphics',
-
-        /**
-         * Constructor
-         * @param objects - array of PIXI.DisplayObject
-         */
-        init: function init(objects) {
-          var _this = this;
-
-          this.container = new external_pixi_js_["Container"]();
-          objects.forEach(function (object) {
-            return _this.container.addChild(object);
-          }); // Translate to matter js coordinate system
-
-          this.container.pivot.set(this.container.width / 2, this.container.height / 2);
-        }
-      });
-      // CONCATENATED MODULE: ./components/physics.js
-
-      /* harmony default export */var components_physics = external_ces_["Component"].extend({
-        name: 'physics',
-        init: function init(body) {
-          this.body = body;
-        }
-      });
-      // CONCATENATED MODULE: ./components/car.js
-
-      /*
-       * Component that represents car
-       */
-
-      /* harmony default export */var components_car = external_ces_["Component"].extend({
-        name: 'car',
-        force: 0.0,
-        init: function init(chassis, genome, car, frontWheel, backWheel) {
-          this.genome = genome;
-          this.chassis = chassis;
-          this.car = car;
-          this.fitness = 0;
-          this.frontWheel = frontWheel;
-          this.backWheel = backWheel;
-        },
-        getAngle: function getAngle(wheel, angle) {
-          if (angle < wheel.angleFrom) angle = wheel.angleFrom;
-          if (angle > wheel.angleTo) angle = wheel.angleTo;
-          return angle;
-        },
-        steer: function steer(angle) {
-          var _this = this;
-
-          this.wheels.forEach(function (wheel) {
-            wheel.angle = _this.getAngle(wheel, angle);
-          });
-        }
-      });
-      // CONCATENATED MODULE: ./entities/raySensor.js
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function _defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-          var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-      }
-
-      function _createClass(Constructor, protoProps, staticProps) {
-        if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;
-      }
-
-      // import * as PolyK from 'polyk'
-      // import * as _ from 'lodash'
-
-      var raySensor_Sensor =
-      /*#__PURE__*/
-      function () {
-        function Sensor(endPoint, ignoredIDs, world) {
-          _classCallCheck(this, Sensor);
-
-          this.endPoint = endPoint;
-          this.world = world;
-          this.shortest = null;
-          this.endPoint[0] *= 800;
-          this.endPoint[1] *= 800;
-          this.ignoredIDs = new Set(ignoredIDs);
-          var t = this;
-          this.result = new external_p2_["RaycastResult"]();
-          this.ray = new external_p2_["Ray"]({
-            mode: external_p2_["Ray"].ALL,
-            from: t.origin,
-            to: t.endPoint,
-            callback: function callback(result) {
-              if (t.ignoredIDs.has(result.body.id)) return;
-              var distance = result.getHitDistance(t.ray);
-
-              if (distance < t.shortest.distance) {
-                t.shortest.distance = distance;
-                t.shortest.body = result.body;
-              }
-            }
-          });
-        }
-
-        _createClass(Sensor, [{
-          key: "cast",
-          value: function cast(origin, rotation) {
-            var c = Math.cos(rotation);
-            var s = Math.sin(rotation);
-            var rotatedEndPoint = [this.endPoint[0] * c - this.endPoint[1] * s, this.endPoint[0] * s + this.endPoint[1] * c];
-            this.ray.from = origin;
-            this.ray.to = [origin[0] + rotatedEndPoint[0], origin[1] + rotatedEndPoint[1]];
-            this.calculateShortest();
-          }
-        }, {
-          key: "calculateShortest",
-          value: function calculateShortest() {
-            this.shortest = {
-              distance: Infinity
-            };
-            this.ray.update();
-            this.world.raycast(this.result, this.ray);
-            this.result.reset();
-          }
-        }]);
-
-        return Sensor;
-      }();
-      // CONCATENATED MODULE: ./entities/car.js
-
-
-      /* harmony default export */var entities_car = function (x, y, world, genome, loader) {
-        var entity = new external_ces_["Entity"]();
-
-        if (loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
-          var graphicsComponent = new components_graphics([new external_pixi_js_["Sprite"](loader.resources['./static/chassis.png'].texture)]);
-          entity.addComponent(graphicsComponent);
-        }
-
-        var body = new external_p2_["Body"]({
-          mass: 2000,
-          position: [x, y],
-          allowSleep: false
         });
-        body.addShape(new external_p2_["Box"]({
-          width: 100,
-          height: 200
-        }));
-        entity.addComponent(new components_physics(body));
-        var car = new external_p2_["TopDownVehicle"](body);
-        var frontWheel = car.addWheel({
-          localPosition: [0, 100]
-        });
-        var backWheel = car.addWheel({
-          localPosition: [0, -100]
-        });
-        entity.addComponent(new components_car(entity, genome, car, frontWheel, backWheel));
-        world.addEntity(entity);
-        var carComponent = entity.getComponent('car');
-        var p2World = entity.getComponent('physics').world;
-        car.addToWorld(p2World);
-        carComponent.sensors = [];
+        pb.callbackInitialized = true;
+      }
 
-        for (var _startingAngle = 210; _startingAngle <= 330; _startingAngle += 30) {
-          carComponent.sensors.push(new raySensor_Sensor([Math.cos(_startingAngle * (Math.PI / 180)), Math.sin(_startingAngle * (Math.PI / 180))], [body.id], p2World));
+      if (_this.input === undefined) {
+        _this.input = [];
+
+        for (var i = 0; i < body.sensors.length; i++) {
+          _this.input.push(0);
         }
 
-        var startingAngle = 90;
-        carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
-        return entity;
+        body.backWheel.setBrakeForce(0);
+        body.frontWheel.setBrakeForce(0);
+        body.frontWheel.setSideFriction(8000);
+        body.backWheel.setSideFriction(6000);
+      }
+
+      var drawArea;
+
+      if (graphics !== undefined) {
+        if (body.graphics === undefined) {
+          drawArea = new external_pixi_js_["Graphics"]();
+          graphics.container.parent.addChild(drawArea);
+          body.graphics = drawArea;
+        } else {
+          drawArea = body.graphics;
+        }
+
+        drawArea.clear();
+        drawArea.lineStyle(5, 0xFFFFFF, 0xFF);
+      }
+
+      _this.updateSensors(body, drawArea, graphics !== undefined, pb);
+
+      if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
+      var output = body.genome.activate(_this.input);
+      var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
+      var isVelNaN = isNaN(vel);
+
+      for (var _i = 0; _i < output.length; _i++) {
+        if (isVelNaN || isNaN(output[_i])) {
+          output[_i] = 0;
+          body.fitness = -9000000;
+          pb.allowSleep = true;
+          pb.force = [0, 0];
+          pb.sleep();
+          return;
+        }
+      }
+
+      var steeringChoice = indexOfMaximum(output.slice(0, 2));
+      var dir = -1;
+
+      if (steeringChoice === 0) {
+        if (body.frontWheel.steerValue < Math.PI / 180.0 * MAXIMUM_STEER) {
+          body.frontWheel.steerValue += Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
+        }
+      } else if (steeringChoice === 1) {
+        if (body.frontWheel.steerValue >= -(Math.PI / 180.0) * MAXIMUM_STEER) {
+          body.frontWheel.steerValue -= Math.PI / 180.0 * ROTATION_PER_SECOND * dt;
+        }
+      }
+
+      var speed = indexOfMaximum(output.slice(2, output.length));
+
+      if (speed === 0) {
+        speed = -1;
+      }
+
+      body.backWheel.engineForce = dir * speed * 9000;
+      if (drawArea === undefined) return;
+      drawArea.lineStyle(5, 0x0000FF, 0xFF);
+      drawArea.moveTo(pb.position[0], pb.position[1]);
+      var angle = body.frontWheel.steerValue + pb.angle;
+      drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed, pb.position[1] + Math.cos(angle) * -100 * speed);
+    });
+  }
+}));
+// CONCATENATED MODULE: ./components/graphics.js
+
+
+/**
+ * Light wrapper around PIXI.Container
+ */
+
+/* harmony default export */ var components_graphics = (external_ces_["Component"].extend({
+  name: 'graphics',
+
+  /**
+   * Constructor
+   * @param objects - array of PIXI.DisplayObject
+   */
+  init: function init(objects) {
+    var _this = this;
+
+    this.container = new external_pixi_js_["Container"]();
+    objects.forEach(function (object) {
+      return _this.container.addChild(object);
+    }); // Translate to matter js coordinate system
+
+    this.container.pivot.set(this.container.width / 2, this.container.height / 2);
+  }
+}));
+// CONCATENATED MODULE: ./components/physics.js
+
+/* harmony default export */ var components_physics = (external_ces_["Component"].extend({
+  name: 'physics',
+  init: function init(body) {
+    this.body = body;
+  }
+}));
+// CONCATENATED MODULE: ./components/car.js
+
+/*
+ * Component that represents car
+ */
+
+/* harmony default export */ var components_car = (external_ces_["Component"].extend({
+  name: 'car',
+  force: 0.0,
+  init: function init(chassis, genome, car, frontWheel, backWheel) {
+    this.genome = genome;
+    this.chassis = chassis;
+    this.car = car;
+    this.fitness = 0;
+    this.frontWheel = frontWheel;
+    this.backWheel = backWheel;
+  },
+  getAngle: function getAngle(wheel, angle) {
+    if (angle < wheel.angleFrom) angle = wheel.angleFrom;
+    if (angle > wheel.angleTo) angle = wheel.angleTo;
+    return angle;
+  },
+  steer: function steer(angle) {
+    var _this = this;
+
+    this.wheels.forEach(function (wheel) {
+      wheel.angle = _this.getAngle(wheel, angle);
+    });
+  }
+}));
+// CONCATENATED MODULE: ./entities/raySensor.js
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// import * as PolyK from 'polyk'
+// import * as _ from 'lodash'
+
+var raySensor_Sensor =
+/*#__PURE__*/
+function () {
+  function Sensor(endPoint, ignoredIDs, world) {
+    _classCallCheck(this, Sensor);
+
+    this.endPoint = endPoint;
+    this.world = world;
+    this.shortest = null;
+    this.endPoint[0] *= 800;
+    this.endPoint[1] *= 800;
+    this.ignoredIDs = new Set(ignoredIDs);
+    var t = this;
+    this.result = new external_p2_["RaycastResult"]();
+    this.ray = new external_p2_["Ray"]({
+      mode: external_p2_["Ray"].ALL,
+      from: t.origin,
+      to: t.endPoint,
+      callback: function callback(result) {
+        if (t.ignoredIDs.has(result.body.id)) return;
+        var distance = result.getHitDistance(t.ray);
+
+        if (distance < t.shortest.distance) {
+          t.shortest.distance = distance;
+          t.shortest.body = result.body;
+        }
+      }
+    });
+  }
+
+  _createClass(Sensor, [{
+    key: "cast",
+    value: function cast(origin, rotation) {
+      var c = Math.cos(rotation);
+      var s = Math.sin(rotation);
+      var rotatedEndPoint = [this.endPoint[0] * c - this.endPoint[1] * s, this.endPoint[0] * s + this.endPoint[1] * c];
+      this.ray.from = origin;
+      this.ray.to = [origin[0] + rotatedEndPoint[0], origin[1] + rotatedEndPoint[1]];
+      this.calculateShortest();
+    }
+  }, {
+    key: "calculateShortest",
+    value: function calculateShortest() {
+      this.shortest = {
+        distance: Infinity
       };
-      // CONCATENATED MODULE: ./entities/wall.js
+      this.ray.update();
+      this.world.raycast(this.result, this.ray);
+      this.result.reset();
+    }
+  }]);
+
+  return Sensor;
+}();
+// CONCATENATED MODULE: ./entities/car.js
 
 
-      function rectangle(x, y, w, h, color) {
-        var result = new external_pixi_js_["Graphics"]();
-        result.beginFill(color, 1);
-        result.drawRect(x, y, w, h);
-        result.position.set(x, y);
-        return result;
-      }
-
-      /* harmony default export */var wall = function (x, y, w, h, world) {
-        var entity = new external_ces_["Entity"]();
-        entity.addComponent(new components_graphics([rectangle(0, 0, w, h, 0x00FF00)]));
-        var body = new external_p2_["Body"]({
-          mass: 0,
-          position: [x, y]
-        });
-        body.addShape(new external_p2_["Box"]({
-          width: w,
-          height: h
-        }));
-        entity.addComponent(new components_physics(body // Matter.Bodies.rectangle(x, y, w, h, {
-        //   isStatic: true
-        // })
-        ));
-        world.addEntity(entity);
-        return entity;
-      };
-      // CONCATENATED MODULE: ./entities/physicsGroup.js
-      function physicsGroup_classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-
-      function physicsGroup_defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-          var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-      }
-
-      function physicsGroup_createClass(Constructor, protoProps, staticProps) {
-        if (protoProps) physicsGroup_defineProperties(Constructor.prototype, protoProps);if (staticProps) physicsGroup_defineProperties(Constructor, staticProps);return Constructor;
-      }
-
-      var PhysicsGroup =
-      /*#__PURE__*/
-      function () {
-        function PhysicsGroup(bodies) {
-          physicsGroup_classCallCheck(this, PhysicsGroup);
-
-          var assert = __webpack_require__(4);
-
-          assert(bodies instanceof Array);
-          this.bodies = bodies;
-          this.bodies.forEach(function (el) {
-            el.oldOrigin = el.body.position.slice(0);
-          });
-        }
-        /**
-         * moves all object by relative offset
-         */
-
-        physicsGroup_createClass(PhysicsGroup, [{
-          key: "move",
-          value: function move(offsetX, offsetY) {
-            this.bodies.forEach(function (el) {
-              el.body.position[0] += offsetX;
-              el.body.position[1] += offsetY;
-            });
-          }
-        }, {
-          key: "moveAbsolute",
-          value: function moveAbsolute(x, y) {
-            this.bodies.forEach(function (el) {
-              el.body.position = el.oldOrigin.slice(0);
-            });
-            this.move(x, y);
-          }
-        }]);
-
-        return PhysicsGroup;
-      }();
-
-      // CONCATENATED MODULE: ./entities/roadPart.js
-
-      /* harmony default export */var roadPart = function (x, y, world, walls) {
-        var wallPhysicsComponent = walls.map(function (wall) {
-          return wall.getComponent('physics');
-        });
-        return new PhysicsGroup(wallPhysicsComponent);
-      };
-      // EXTERNAL MODULE: external "chance"
-      var external_chance_ = __webpack_require__(3);
-      var external_chance_default = /*#__PURE__*/__webpack_require__.n(external_chance_);
-
-      // CONCATENATED MODULE: ./systems/roadDirector.js
 
 
-      function getDirection(x, y, w, h) {
-        if (x >= w) return 'right';
-        if (y >= h) return 'up';
-        if (x <= 0) return 'left';
-        if (y <= 0) return 'down';
-        return 'onScreen';
-      }
 
-      /* harmony default export */var roadDirector = external_ces_["System"].extend({
-        getRoomID: function getRoomID() {
-          return this.position[0] + ',' + this.position[1];
-        },
-        setup: function setup(world, startingPiece) {
-          var _this = this;
 
-          this.rooms = {};
-          this.STARTING_PIECE = startingPiece || 'Box';
-          this.world = world;
-          this.rng = new external_chance_default.a('RNG0,0');
-          this.position = [0, 0];
-          this.parts = {
-            '-': {
-              'group': roadPart(0, 0, this.world, [wall(0, 250, 8000, 20, this.world), wall(0, 550, 8000, 20, this.world)]),
-              'possibleParts': {
-                'left': ['Cross', 'T'],
-                'right': ['Cross', 'T']
-              }
-            },
-            'I': {
-              'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
-              'possibleParts': {
-                'up': ['I'],
-                'down': ['I']
-              }
-            },
-            'I left': {
-              'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 480, this.world), wall(250, 750, 20, 400, this.world), wall(105, 250, 310, 20, this.world), wall(105, 550, 310, 20, this.world), wall(550, 0, 20, 8000, this.world)]),
-              'possibleParts': {
-                'up': ['Cross', 'I'],
-                'down': ['Cross', 'T', 'I'],
-                'left': ['Cross', 'T'],
-                'right': ['Cross', 'T']
-              }
-            },
-            'I right': {
-              'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
-              'possibleParts': {
-                'up': ['Cross', 'I'],
-                'down': ['Cross', 'T', 'I'],
-                'left': ['Cross', 'T'],
-                'right': ['Cross', 'T']
-              }
-            },
-            'I with obstructions': {
-              'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world), wall(300, 100, 100, 20, this.world), wall(500, 600, 100, 20, this.world)]),
-              'possibleParts': {
-                'up': ['I with obstructions'],
-                'down': ['I with obstructions']
-              }
-            },
-            'T': {
-              'group': roadPart(0, 0, this.world, [wall(250, 700, 20, 400, this.world), wall(550, 700, 20, 400, this.world), wall(125, 500, 250, 20, this.world), wall(675, 500, 250, 20, this.world), wall(400, 250, 800, 20, this.world)]),
-              'possibleParts': {
-                'down': ['Cross', 'I'],
-                'up': ['Cross', 'I'],
-                'left': ['Cross', 'T'],
-                'right': ['Cross', 'T']
-              }
-            },
-            'Cross': {
-              'group': roadPart(0, 0, this.world, [wall(675, 500, 250, 20, this.world), wall(125, 500, 250, 20, this.world), wall(675, 250, 250, 20, this.world), wall(125, 250, 250, 20, this.world), wall(250, 50, 20, 400, this.world), wall(550, 50, 20, 400, this.world), wall(250, 700, 20, 400, this.world), wall(550, 700, 20, 400, this.world)]),
-              'possibleParts': {
-                'up': ['Cross', 'I'],
-                'down': ['Cross', 'T', 'I'],
-                'left': ['Cross', 'T'],
-                'right': ['Cross', 'T']
-              }
-            },
-            'Box': {
-              'group': roadPart(0, 0, this.world, [wall(400, 0, 800, 20, this.world), wall(0, 400, 20, 800, this.world), wall(800, 400, 20, 800, this.world), wall(400, 800, 800, 20, this.world)]),
-              'possibleParts': {}
-            }
-          };
-          Object.keys(this.parts).forEach(function (key) {
-            if (key !== _this.STARTING_PIECE) {
-              _this.parts[key]['group'].moveAbsolute(50000, 50000);
-            }
-          });
-          this.rooms[this.getRoomID()] = {
-            entryPoint: [400, 400],
-            distance: 0
-          };
-        },
-        reset: function reset(startingPiece) {
-          this.STARTING_PIECE = startingPiece || this.STARTING_PIECE;
-          this.rng = new external_chance_default.a('RNG0,0');
-          this.position = [0, 0];
-          this.rooms = {};
-          this.rooms[this.getRoomID()] = {
-            entryPoint: [400, 400],
-            distance: 0
-          };
-          this.currentPart['group'].moveAbsolute(50000, 50000);
-          this.currentPart = this.parts[this.STARTING_PIECE];
-          this.currentPart['group'].moveAbsolute(0, 0);
-        },
-        setCar: function setCar(car) {
-          this.car = car;
-        },
-        getCarPosition: function getCarPosition() {
-          if (this.car != null) {
-            var body = this.car.getComponent('physics').body;
-            return body.position;
-          }
 
-          return null;
-        },
-        swapNextRoadPart: function swapNextRoadPart(direction) {
-          if (this.currentPart === undefined) return;
-          var possiblePieces = this.currentPart['possibleParts'][direction];
-          if (possiblePieces.length === 0) return;
-          if (direction === 'up') this.position[1] += 1;
-          if (direction === 'down') this.position[1] -= 1;
-          if (direction === 'left') this.position[0] -= 1;
-          if (direction === 'right') this.position[0] += 1;
-          this.currentPart['group'].moveAbsolute(50000, 50000);
-          this.rng = new external_chance_default.a('RNG' + this.position[0] + ',' + this.position[1]);
+/* harmony default export */ var entities_car = (function (x, y, world, genome, loader) {
+  var entity = new external_ces_["Entity"]();
 
-          if (this.position[0] === 0 && this.position[1] === 0) {
-            this.currentPart = this.parts[this.STARTING_PIECE];
-          } else {
-            this.currentPart = this.parts[this.rng.pickone(possiblePieces)];
-          }
+  if (false) { var graphicsComponent; }
 
-          this.currentPart['group'].moveAbsolute(0, 0);
-          this.moveCarBackToScreen(direction);
-        },
-        moveCarBackToScreen: function moveCarBackToScreen(direction) {
-          var body = this.car.getComponent('physics').body;
-          var newPos = [0, 0];
+  var body = new external_p2_["Body"]({
+    mass: 2000,
+    position: [x, y],
+    allowSleep: false
+  });
+  body.addShape(new external_p2_["Box"]({
+    width: 100,
+    height: 200
+  }));
+  entity.addComponent(new components_physics(body));
+  var car = new external_p2_["TopDownVehicle"](body);
+  var frontWheel = car.addWheel({
+    localPosition: [0, 100]
+  });
+  var backWheel = car.addWheel({
+    localPosition: [0, -100]
+  });
+  entity.addComponent(new components_car(entity, genome, car, frontWheel, backWheel));
+  world.addEntity(entity);
+  var carComponent = entity.getComponent('car');
+  var p2World = entity.getComponent('physics').world;
+  car.addToWorld(p2World);
+  carComponent.sensors = [];
 
-          if (direction === 'up') {
-            newPos = [body.position[0], 0];
-          } else if (direction === 'down') {
-            newPos = [body.position[0], 800];
-          } else if (direction === 'left') {
-            newPos = [800, body.position[1]];
-          } else if (direction === 'right') {
-            newPos = [0, body.position[1]];
-          }
+  for (var _startingAngle = 210; _startingAngle <= 330; _startingAngle += 30) {
+    carComponent.sensors.push(new raySensor_Sensor([Math.cos(_startingAngle * (Math.PI / 180)), Math.sin(_startingAngle * (Math.PI / 180))], [body.id], p2World));
+  }
 
-          body.position = newPos;
-          this.rooms[this.getRoomID()] = {
-            entryPoint: body.position.slice(0),
-            distance: 0
-          };
-        },
-        update: function update(dt) {
-          var _this2 = this;
+  var startingAngle = 90;
+  carComponent.sensors.push(new raySensor_Sensor([Math.cos(startingAngle * (Math.PI / 180)), Math.sin(startingAngle * (Math.PI / 180))], [body.id], p2World));
+  return entity;
+});
+// CONCATENATED MODULE: ./entities/wall.js
 
-          if (this.currentPart === undefined) {
-            this.currentPart = this.parts[this.STARTING_PIECE];
-          }
 
-          var pos = this.getCarPosition();
-          this.rooms[this.getRoomID()].distance = external_p2_["vec2"].distance(this.rooms[this.getRoomID()].entryPoint, pos);
-          this.car.getComponent('car').fitness = 0;
-          Object.keys(this.rooms).forEach(function (key) {
-            _this2.car.getComponent('car').fitness += _this2.rooms[key].distance;
-          });
 
-          if (pos !== null) {
-            var direction = getDirection(pos[0], pos[1], 800, 800);
 
-            if (direction !== 'onScreen') {
-              this.swapNextRoadPart(direction);
-            }
-          }
-        }
+
+
+function rectangle(x, y, w, h, color) {
+  var result = new external_pixi_js_["Graphics"]();
+  result.beginFill(color, 1);
+  result.drawRect(x, y, w, h);
+  result.position.set(x, y);
+  return result;
+}
+
+/* harmony default export */ var wall = (function (x, y, w, h, world) {
+  var entity = new external_ces_["Entity"]();
+  entity.addComponent(new components_graphics([rectangle(0, 0, w, h, 0x00FF00)]));
+  var body = new external_p2_["Body"]({
+    mass: 0,
+    position: [x, y]
+  });
+  body.addShape(new external_p2_["Box"]({
+    width: w,
+    height: h
+  }));
+  entity.addComponent(new components_physics(body // Matter.Bodies.rectangle(x, y, w, h, {
+  //   isStatic: true
+  // })
+  ));
+  world.addEntity(entity);
+  return entity;
+});
+// CONCATENATED MODULE: ./entities/physicsGroup.js
+function physicsGroup_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function physicsGroup_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function physicsGroup_createClass(Constructor, protoProps, staticProps) { if (protoProps) physicsGroup_defineProperties(Constructor.prototype, protoProps); if (staticProps) physicsGroup_defineProperties(Constructor, staticProps); return Constructor; }
+
+var PhysicsGroup =
+/*#__PURE__*/
+function () {
+  function PhysicsGroup(bodies) {
+    physicsGroup_classCallCheck(this, PhysicsGroup);
+
+    var assert = __webpack_require__(4);
+
+    assert(bodies instanceof Array);
+    this.bodies = bodies;
+    this.bodies.forEach(function (el) {
+      el.oldOrigin = el.body.position.slice(0);
+    });
+  }
+  /**
+   * moves all object by relative offset
+   */
+
+
+  physicsGroup_createClass(PhysicsGroup, [{
+    key: "move",
+    value: function move(offsetX, offsetY) {
+      this.bodies.forEach(function (el) {
+        el.body.position[0] += offsetX;
+        el.body.position[1] += offsetY;
       });
-      // CONCATENATED MODULE: ./main.js
-      /* harmony export (binding) */__webpack_require__.d(__webpack_exports__, "default", function () {
-        return main_Simulation;
+    }
+  }, {
+    key: "moveAbsolute",
+    value: function moveAbsolute(x, y) {
+      this.bodies.forEach(function (el) {
+        el.body.position = el.oldOrigin.slice(0);
       });
-      function main_classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
+      this.move(x, y);
+    }
+  }]);
+
+  return PhysicsGroup;
+}();
+
+
+// CONCATENATED MODULE: ./entities/roadPart.js
+
+/* harmony default export */ var roadPart = (function (x, y, world, walls) {
+  var wallPhysicsComponent = walls.map(function (wall) {
+    return wall.getComponent('physics');
+  });
+  return new PhysicsGroup(wallPhysicsComponent);
+});
+// EXTERNAL MODULE: external "chance"
+var external_chance_ = __webpack_require__(3);
+var external_chance_default = /*#__PURE__*/__webpack_require__.n(external_chance_);
+
+// CONCATENATED MODULE: ./systems/roadDirector.js
+
+
+
+
+
+
+function getDirection(x, y, w, h) {
+  if (x >= w) return 'right';
+  if (y >= h) return 'up';
+  if (x <= 0) return 'left';
+  if (y <= 0) return 'down';
+  return 'onScreen';
+}
+
+/* harmony default export */ var roadDirector = (external_ces_["System"].extend({
+  getRoomID: function getRoomID() {
+    return this.position[0] + ',' + this.position[1];
+  },
+  setup: function setup(world, startingPiece) {
+    var _this = this;
+
+    this.rooms = {};
+    this.STARTING_PIECE = startingPiece || 'Box';
+    this.world = world;
+    this.rng = new external_chance_default.a('RNG0,0');
+    this.position = [0, 0];
+    this.parts = {
+      '-': {
+        'group': roadPart(0, 0, this.world, [wall(0, 250, 8000, 20, this.world), wall(0, 550, 8000, 20, this.world)]),
+        'possibleParts': {
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
+        }
+      },
+      'L': {
+        'group': roadPart(0, 0, this.world, [wall(690, 250, 300, 20, this.world), wall(250, 160, 20, 800, this.world), wall(550, 50, 20, 400, this.world), wall(650, 550, 800, 20, this.world)]),
+        'possibleParts': {
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
+        }
+      },
+      'reverse L': {
+        'group': roadPart(0, 0, this.world, [wall(110, 250, 300, 20, this.world), wall(250, 0, 20, 490, this.world), wall(550, 0, 20, 1100, this.world), wall(250, 550, 620, 20, this.world)]),
+        'possibleParts': {
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
+        }
+      },
+      'upside L': {
+        'group': roadPart(0, 0, this.world, [wall(690, 550, 300, 20, this.world), wall(550, 740, 20, 400, this.world), wall(250, 640, 20, 800, this.world), wall(650, 250, 800, 20, this.world)]),
+        'possibleParts': {
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
+        }
+      },
+      'inverted upside L': {
+        'group': roadPart(0, 0, this.world, [wall(110, 550, 300, 20, this.world), wall(250, 740, 20, 400, this.world), wall(550, 640, 20, 800, this.world), wall(150, 250, 800, 20, this.world)]),
+        'possibleParts': {
+          'left': ['Cross', 'T'],
+          'right': ['Cross', 'T']
+        }
+      },
+      'I': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'possibleParts': {
+          'up': ['I'],
+          'down': ['I']
+        }
+      },
+      'I with obstructions': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world), wall(300, 100, 100, 20, this.world), wall(500, 600, 100, 20, this.world)]),
+        'possibleParts': {
+          'up': ['I with obstructions'],
+          'down': ['I with obstructions']
         }
       }
+    };
+    Object.keys(this.parts).forEach(function (key) {
+      if (key !== _this.STARTING_PIECE) {
+        _this.parts[key]['group'].moveAbsolute(50000, 50000);
+      }
+    });
+    this.rooms[this.getRoomID()] = {
+      entryPoint: [400, 400],
+      distance: 0
+    };
+  },
+  reset: function reset(startingPiece) {
+    this.STARTING_PIECE = startingPiece || this.STARTING_PIECE;
+    this.rng = new external_chance_default.a('RNG0,0');
+    this.position = [0, 0];
+    this.rooms = {};
+    this.rooms[this.getRoomID()] = {
+      entryPoint: [400, 400],
+      distance: 0
+    };
+    this.currentPart['group'].moveAbsolute(50000, 50000);
+    this.currentPart = this.parts[this.STARTING_PIECE];
+    this.currentPart['group'].moveAbsolute(0, 0);
+  },
+  setCar: function setCar(car) {
+    this.car = car;
+  },
+  getCarPosition: function getCarPosition() {
+    if (this.car != null) {
+      var body = this.car.getComponent('physics').body;
+      return body.position;
+    }
 
-      function main_defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-          var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    return null;
+  },
+  swapNextRoadPart: function swapNextRoadPart(direction) {
+    if (this.currentPart === undefined) return;
+    var possiblePieces = this.currentPart['possibleParts'][direction];
+    if (possiblePieces.length === 0) return;
+    if (direction === 'up') this.position[1] += 1;
+    if (direction === 'down') this.position[1] -= 1;
+    if (direction === 'left') this.position[0] -= 1;
+    if (direction === 'right') this.position[0] += 1;
+    this.currentPart['group'].moveAbsolute(50000, 50000);
+    this.rng = new external_chance_default.a('RNG' + this.position[0] + ',' + this.position[1]);
+
+    if (this.position[0] === 0 && this.position[1] === 0) {
+      this.currentPart = this.parts[this.STARTING_PIECE];
+    } else {
+      this.currentPart = this.parts[this.rng.pickone(possiblePieces)];
+    }
+
+    this.currentPart['group'].moveAbsolute(0, 0);
+    this.moveCarBackToScreen(direction);
+  },
+  moveCarBackToScreen: function moveCarBackToScreen(direction) {
+    var body = this.car.getComponent('physics').body;
+    var newPos = [0, 0];
+
+    if (direction === 'up') {
+      newPos = [body.position[0], 0];
+    } else if (direction === 'down') {
+      newPos = [body.position[0], 800];
+    } else if (direction === 'left') {
+      newPos = [800, body.position[1]];
+    } else if (direction === 'right') {
+      newPos = [0, body.position[1]];
+    }
+
+    body.position = newPos;
+    this.rooms[this.getRoomID()] = {
+      entryPoint: body.position.slice(0),
+      distance: 0
+    };
+  },
+  update: function update(dt) {
+    var _this2 = this;
+
+    if (this.currentPart === undefined) {
+      this.currentPart = this.parts[this.STARTING_PIECE];
+    }
+
+    var pos = this.getCarPosition();
+    this.rooms[this.getRoomID()].distance = external_p2_["vec2"].distance(this.rooms[this.getRoomID()].entryPoint, pos);
+    this.car.getComponent('car').fitness = 0;
+    Object.keys(this.rooms).forEach(function (key) {
+      _this2.car.getComponent('car').fitness += _this2.rooms[key].distance;
+    });
+
+    if (pos !== null) {
+      var direction = getDirection(pos[0], pos[1], 800, 800);
+
+      if (direction !== 'onScreen') {
+        this.swapNextRoadPart(direction);
+      }
+    }
+  }
+}));
+// CONCATENATED MODULE: ./main.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return main_Simulation; });
+function main_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function main_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function main_createClass(Constructor, protoProps, staticProps) { if (protoProps) main_defineProperties(Constructor.prototype, protoProps); if (staticProps) main_defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+
+
+
+
+var CES = __webpack_require__(1);
+
+function fillNaN(object, value) {
+  function replaceNaN(x) {
+    if (isNaN(x)) {
+      return value;
+    }
+
+    return x;
+  }
+
+  var keys = Object.keys(object);
+
+  for (var i in keys) {
+    if (typeof object[keys[i]] === 'number' && isNaN(object[keys[i]])) {
+      object[keys[i]] = value;
+    } else if (object[keys[i]] !== null && object[keys[i]].constructor === Float32Array) {
+      for (var j = 0; j < object[keys[i]].length; j++) {
+        object[keys[i]][j] = replaceNaN(object[keys[i]][j]);
+      }
+    }
+  }
+}
+/**
+ * Main class of simulation
+ */
+
+
+var main_Simulation =
+/*#__PURE__*/
+function () {
+  function Simulation(frames, canvasElement, loader) {
+    main_classCallCheck(this, Simulation);
+
+    this.time = frames;
+    this.canvasElement = canvasElement;
+    this.loader = loader;
+  }
+
+  main_createClass(Simulation, [{
+    key: "init",
+    value: function init(canvas, startingPiece) {
+      if (this.world === undefined) {
+        this.world = new CES.World();
+
+        if (canvas !== undefined) {
+          this.renderer = new systems_graphics();
+          this.renderer.setCanvas(canvas);
+          this.renderer.draw = true;
+          this.world.addSystem(this.renderer);
         }
+
+        this.physicsSystem = new physics();
+        this.world.addSystem(this.physicsSystem);
+        this.world.addSystem(new systems_car());
+        this.car = entities_car(400.0, 400.0, this.world, this.genome, this.loader);
+        this.roadDirector = new roadDirector();
+        this.roadDirector.setup(this.world, startingPiece);
+        this.roadDirector.setCar(this.car);
+        this.world.addSystem(this.roadDirector);
+      } else {
+        this.car.getComponent('car').genome = this.genome;
+        this.roadDirector.reset(startingPiece);
       }
 
-      function main_createClass(Constructor, protoProps, staticProps) {
-        if (protoProps) main_defineProperties(Constructor.prototype, protoProps);if (staticProps) main_defineProperties(Constructor, staticProps);return Constructor;
+      this.lastDt = 0;
+    }
+  }, {
+    key: "evaluate",
+    value: function evaluate(genome, startingPiece) {
+      this.destroy();
+      this.genome = genome;
+      this.init(this.canvasElement, startingPiece);
+      this.acc = 0;
+      this.lastDt = null;
+      var t = this;
+      return new Promise(function (resolve) {
+        t.onFinish = resolve;
+      });
+    }
+  }, {
+    key: "fitness",
+    value: function fitness() {
+      return this.car.getComponent('car').fitness;
+    }
+  }, {
+    key: "isRunning",
+    value: function isRunning() {
+      return this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING;
+    }
+  }, {
+    key: "evalGenome",
+    value: function evalGenome(dt, genome, startingPiece) {
+      this.evaluate(genome, startingPiece);
+
+      while (this.isRunning()) {
+        this.update(dt);
       }
 
-      var CES = __webpack_require__(1);
+      return this.car.getComponent('car').fitness;
+    }
+    /**
+     * Main simulation loop
+     */
 
-      function fillNaN(object, value) {
-        function replaceNaN(x) {
-          if (isNaN(x)) {
-            return value;
-          }
+  }, {
+    key: "update",
+    value: function update(dt) {
+      if (this.lastDt === null) this.lastDt = dt;
+      this.acc += dt;
+      var currentFitness = this.car.getComponent('car').fitness;
 
-          return x;
-        }
-
-        var keys = Object.keys(object);
-
-        (function (_keys2) {
-          for (var i, _index2 = 0; _index2 < _keys2.length; _index2++) {
-            i = _keys2[_index2];
-
-            if (typeof object[keys[i]] === 'number' && isNaN(object[keys[i]])) {
-              object[keys[i]] = value;
-            } else if (object[keys[i]] !== null && object[keys[i]].constructor === Float32Array) {
-              for (var j = 0; j < object[keys[i]].length; j++) {
-                object[keys[i]][j] = replaceNaN(object[keys[i]][j]);
-              }
-            }
-          }
-        })(Object.keys(keys));
+      if (this.isRunning()) {
+        this.world.update(dt);
+      } else {
+        this.onFinish(currentFitness);
       }
-      /**
-       * Main class of simulation
-       */
+    }
+    /**
+     * Called on component destruction
+     */
 
-      var main_Simulation =
-      /*#__PURE__*/
-      function () {
-        function Simulation(frames, canvasElement, loader) {
-          main_classCallCheck(this, Simulation);
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      if (this.world !== undefined) {
+        this.car.getComponent('car').fitness = 0;
+        this.car.getComponent('car').frontWheel.steerValue = 0;
+        var body = this.car.getComponent('physics').body;
+        fillNaN(body, 0.0);
+        body.allowSleep = false;
 
-          this.time = frames;
-          this.canvasElement = canvasElement;
-          this.loader = loader;
+        if (body.sleepState === external_p2_["Body"].SLEEPING) {
+          body.wakeUp();
         }
 
-        main_createClass(Simulation, [{
-          key: "init",
-          value: function init(canvas, startingPiece) {
-            if (this.world === undefined) {
-              this.world = new CES.World();
+        body.setZeroForce();
+        body.position = [this.position[0], this.position[1]];
+        body.angularVelocity = 0;
+        body.velocity = [0, 0];
+        body.angle = 0;
+        this.roadDirector.reset();
+      } else {
+        this.position = [400, 400];
+        this.velocity = [0, 0];
+      }
+    }
+  }]);
 
-              if (canvas !== undefined) {
-                this.renderer = new systems_graphics();
-                this.renderer.setCanvas(canvas);
-                this.renderer.draw = true;
-                this.world.addSystem(this.renderer);
-              }
+  return Simulation;
+}();
 
-              this.physicsSystem = new physics();
-              this.world.addSystem(this.physicsSystem);
-              this.world.addSystem(new systems_car());
-              this.car = entities_car(400.0, 400.0, this.world, this.genome, this.loader);
-              this.roadDirector = new roadDirector();
-              this.roadDirector.setup(this.world, startingPiece);
-              this.roadDirector.setCar(this.car);
-              this.world.addSystem(this.roadDirector);
-            } else {
-              this.car.getComponent('car').genome = this.genome;
-              this.roadDirector.reset(startingPiece);
-            }
 
-            this.lastDt = 0;
-          }
-        }, {
-          key: "evaluate",
-          value: function evaluate(genome, startingPiece) {
-            this.destroy();
-            this.genome = genome;
-            this.init(this.canvasElement, startingPiece);
-            this.acc = 0;
-            this.lastDt = null;
-            var t = this;
-            return new Promise(function (resolve) {
-              t.onFinish = resolve;
-            });
-          }
-        }, {
-          key: "fitness",
-          value: function fitness() {
-            return this.car.getComponent('car').fitness;
-          }
-        }, {
-          key: "isRunning",
-          value: function isRunning() {
-            return this.acc < this.time && this.car.getComponent('physics').body.sleepState !== external_p2_["Body"].SLEEPING;
-          }
-        }, {
-          key: "evalGenome",
-          value: function evalGenome(dt, genome, startingPiece) {
-            this.evaluate(genome, startingPiece);
 
-            while (this.isRunning()) {
-              this.update(dt);
-            }
-
-            return this.car.getComponent('car').fitness;
-          }
-          /**
-           * Main simulation loop
-           */
-
-        }, {
-          key: "update",
-          value: function update(dt) {
-            if (this.lastDt === null) this.lastDt = dt;
-            this.acc += dt;
-            var currentFitness = this.car.getComponent('car').fitness;
-
-            if (this.isRunning()) {
-              this.world.update(dt);
-            } else {
-              this.onFinish(currentFitness);
-            }
-          }
-          /**
-           * Called on component destruction
-           */
-
-        }, {
-          key: "destroy",
-          value: function destroy() {
-            if (this.world !== undefined) {
-              this.car.getComponent('car').fitness = 0;
-              this.car.getComponent('car').frontWheel.steerValue = 0;
-              var body = this.car.getComponent('physics').body;
-              fillNaN(body, 0.0);
-              body.allowSleep = false;
-
-              if (body.sleepState === external_p2_["Body"].SLEEPING) {
-                body.wakeUp();
-              }
-
-              body.setZeroForce();
-              body.position = [this.position[0], this.position[1]];
-              body.angularVelocity = 0;
-              body.velocity = [0, 0];
-              body.angle = 0;
-              this.roadDirector.reset();
-            } else {
-              this.position = [400, 400];
-              this.velocity = [0, 0];
-            }
-          }
-        }]);
-
-        return Simulation;
-      }();
-
-      /***/
-    }]
-    /******/)
-  );
+/***/ })
+/******/ ]);
 });

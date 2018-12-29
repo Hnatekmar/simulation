@@ -2,7 +2,7 @@ import * as CES from 'ces'
 import * as p2 from 'p2'
 import * as PIXI from 'pixi.js'
 
-const MAXIMUM_STEER = 45
+const MAXIMUM_STEER = 15
 const ROTATION_PER_SECOND = MAXIMUM_STEER
 function indexOfMaximum (arr) {
     let index = -1
@@ -28,14 +28,33 @@ function normalizeAngle(angle){
 // noinspection JSUnusedLocalSymbols
 export default CES.System.extend({
     acc: 0,
+    updateSensors: function (body, drawArea, draw, pb) {
+        for (let i = 0; i < body.sensors.length; i++) {
+            body.sensors[i].cast(pb.position, pb.angle)
+            if (body.sensors[i].shortest.distance === Infinity || body.sensors[i].shortest.distance > 800) {
+                body.sensors[i].shortest.distance = 800
+            }
+            if(draw) {
+                drawArea.moveTo(body.sensors[i].ray.from[0], body.sensors[i].ray.from[1])
+                drawArea.lineTo(
+                    body.sensors[i].ray.from[0] + body.sensors[i].ray.direction[0] * body.sensors[i].shortest.distance,
+                    body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
+            }
+            body.sensors[i].shortest.distance /= 800.0
+            this.input[i] = body.sensors[i].shortest.distance
+        }
+    },
     update: function (dt) {
-        this.acc += dt
-        if (this.acc < 0.03) return
         this.acc = 0
         this.world.getEntities('car').forEach((entity) => {
             const body = entity.getComponent('car')
             let graphics = entity.getComponent('graphics')
             const pb = body.chassis.getComponent('physics').body
+            if (body.genome.positions !== undefined) {
+                let info = body.genome.positions.shift()
+                pb.position = [info[0], info[1]]
+                pb.angle = info[2]
+            }
 
             if (pb.callbackInitialized === undefined) {
                 pb.world.on('beginContact', (event) => {
@@ -74,31 +93,18 @@ export default CES.System.extend({
                 drawArea.clear()
                 drawArea.lineStyle(5, 0xFFFFFF, 0xFF);
             }
-            for (let i = 0; i < body.sensors.length; i++) {
-                body.sensors[i].cast(pb.position, pb.angle)
-                if (body.sensors[i].shortest.distance === Infinity || body.sensors[i].shortest.distance > 800) {
-                    body.sensors[i].shortest.distance = 800
-                }
-                if(graphics !== undefined) {
-                    drawArea.moveTo(body.sensors[i].ray.from[0], body.sensors[i].ray.from[1])
-                    drawArea.lineTo(
-                        body.sensors[i].ray.from[0] + body.sensors[i].ray.direction[0] * body.sensors[i].shortest.distance,
-                        body.sensors[i].ray.from[1] + body.sensors[i].ray.direction[1] * body.sensors[i].shortest.distance)
-                }
-                body.sensors[i].shortest.distance /= 800.0
-                this.input[i] = body.sensors[i].shortest.distance
-            }
+            this.updateSensors(body, drawArea, graphics !== undefined, pb)
             if (pb.sleepState === p2.Body.SLEEPING) return;
             let output = body.genome.activate(this.input)
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
             let isVelNaN = isNaN(vel)
             for (let i = 0; i < output.length; i++) {
                 if (isVelNaN || isNaN(output[i])) {
-                    output[i] = 0
-                    body.fitness = -9000000
+                    output[i] = 0;
+                    body.fitness = -9000000;
                     pb.allowSleep = true
-                    pb.force = [0, 0]
-                    pb.sleep()
+                    pb.force = [0, 0];
+                    pb.sleep();
                     return
                 }
             }
@@ -119,10 +125,11 @@ export default CES.System.extend({
             }
             body.backWheel.engineForce = dir * speed * 9000
             if (drawArea === undefined) return
-            drawArea.lineStyle(5, 0x00FF00, 0xFF);
+            drawArea.lineStyle(5, 0x0000FF, 0xFF);
             drawArea.moveTo(pb.position[0], pb.position[1])
-            drawArea.lineTo(pb.position[0] + Math.cos( 0) - Math.sin(body.frontWheel.steerValue) * 100,
-                            pb.position[1] - Math.sin(0) + Math.cos(body.frontWheel.steerValue) * 100)
+            let angle = body.frontWheel.steerValue + pb.angle
+            drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed,
+                            pb.position[1] + Math.cos(angle) * -100 * speed)
         })
     }
 })
