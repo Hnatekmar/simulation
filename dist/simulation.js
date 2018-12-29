@@ -502,7 +502,10 @@ function () {
 /* harmony default export */ var entities_car = (function (x, y, world, genome, loader) {
   var entity = new external_ces_["Entity"]();
 
-  if (false) { var graphicsComponent; }
+  if (loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
+    var graphicsComponent = new components_graphics([new external_pixi_js_["Sprite"](loader.resources['./static/chassis.png'].texture)]);
+    entity.addComponent(graphicsComponent);
+  }
 
   var body = new external_p2_["Body"]({
     mass: 2000,

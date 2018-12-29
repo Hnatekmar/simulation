@@ -8,7 +8,7 @@ import * as ray from '../entities/raySensor'
 
 export default function (x, y, world, genome, loader) {
     const entity = new CES.Entity()
-    if (false && loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
+    if (loader !== undefined && loader.resources['./static/chassis.png'] !== undefined) {
         const graphicsComponent = new GraphicsComponent([
             new PIXI.Sprite(loader.resources['./static/chassis.png'].texture)
         ])
