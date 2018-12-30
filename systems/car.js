@@ -50,11 +50,6 @@ export default CES.System.extend({
             const body = entity.getComponent('car')
             let graphics = entity.getComponent('graphics')
             const pb = body.chassis.getComponent('physics').body
-            if (body.genome.positions !== undefined) {
-                let info = body.genome.positions.shift()
-                pb.position = [info[0], info[1]]
-                pb.angle = info[2]
-            }
 
             if (pb.callbackInitialized === undefined) {
                 pb.world.on('beginContact', (event) => {
@@ -73,7 +68,7 @@ export default CES.System.extend({
 
             if (this.input === undefined) {
                 this.input = []
-                for (let i = 0; i < body.sensors.length; i++) {
+                for (let i = 0; i < body.sensors.length + 2; i++) {
                     this.input.push(0)
                 }
                 body.backWheel.setBrakeForce(0)
@@ -95,8 +90,14 @@ export default CES.System.extend({
             }
             this.updateSensors(body, drawArea, graphics !== undefined, pb)
             if (pb.sleepState === p2.Body.SLEEPING) return;
-            let output = body.genome.activate(this.input)
             let vel = Math.sqrt(p2.vec2.squaredLength(pb.velocity))
+            if (body.options.inputVelocity) {
+                this.input.push(vel / 42)
+            }
+            if (body.options.inputWheel) {
+                this.input.push(normalizeAngle(body.frontWheel.steerValue))
+            }
+            let output = body.genome.activate(this.input)
             let isVelNaN = isNaN(vel)
             for (let i = 0; i < output.length; i++) {
                 if (isVelNaN || isNaN(output[i])) {
@@ -108,7 +109,8 @@ export default CES.System.extend({
                     return
                 }
             }
-            let steeringChoice = indexOfMaximum(output.slice(0, 2))
+            let offset = (body.options.holdWheel !== undefined ? 1 : 0)
+            let steeringChoice = indexOfMaximum(output.slice(0, 2 + offset))
             let dir = -1
             if (steeringChoice === 0) {
                 if (body.frontWheel.steerValue < (Math.PI / 180.0) * MAXIMUM_STEER) {
@@ -119,7 +121,7 @@ export default CES.System.extend({
                     body.frontWheel.steerValue -= (Math.PI / 180.0) * ROTATION_PER_SECOND * dt
                 }
             }
-            let speed = indexOfMaximum(output.slice(2, output.length))
+            let speed = indexOfMaximum(output.slice(2 + offset, 4 + offset))
             if (speed === 0) {
                 speed = -1
             }
@@ -127,7 +129,7 @@ export default CES.System.extend({
             if (drawArea === undefined) return
             drawArea.lineStyle(5, 0x0000FF, 0xFF);
             drawArea.moveTo(pb.position[0], pb.position[1])
-            let angle = body.frontWheel.steerValue + pb.angle
+            let angle = body.frontWheel.steerValue
             drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed,
                             pb.position[1] + Math.cos(angle) * -100 * speed)
         })

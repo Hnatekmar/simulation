@@ -48,7 +48,8 @@ export default class Simulation {
             }
             this.physicsSystem = new PhysicsSystem()
             this.world.addSystem(this.physicsSystem)
-            this.world.addSystem(new CarSystem())
+            let carSystem = new CarSystem()
+            this.world.addSystem(carSystem)
             this.car = Car(400.0, 400.0, this.world, this.genome, this.loader)
             this.roadDirector = new RoadDirector()
             this.roadDirector.setup(this.world, startingPiece)
@@ -61,13 +62,14 @@ export default class Simulation {
         this.lastDt = 0
     }
 
-    evaluate(genome, startingPiece) {
+    evaluate(genome, startingPiece, options) {
         this.destroy()
         this.genome = genome
         this.init(this.canvasElement, startingPiece)
         this.acc = 0
         this.lastDt = null
         let t = this
+        this.car.getComponent('car').options = options || {}
         return new Promise(
             function (resolve) {
                 t.onFinish = resolve

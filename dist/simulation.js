@@ -268,12 +268,6 @@ function normalizeAngle(angle) {
       var graphics = entity.getComponent('graphics');
       var pb = body.chassis.getComponent('physics').body;
 
-      if (body.genome.positions !== undefined) {
-        var info = body.genome.positions.shift();
-        pb.position = [info[0], info[1]];
-        pb.angle = info[2];
-      }
-
       if (pb.callbackInitialized === undefined) {
         pb.world.on('beginContact', function (event) {
           var bodyA = event.bodyA;
@@ -293,7 +287,7 @@ function normalizeAngle(angle) {
       if (_this.input === undefined) {
         _this.input = [];
 
-        for (var i = 0; i < body.sensors.length; i++) {
+        for (var i = 0; i < body.sensors.length + 2; i++) {
           _this.input.push(0);
         }
 
@@ -321,8 +315,17 @@ function normalizeAngle(angle) {
       _this.updateSensors(body, drawArea, graphics !== undefined, pb);
 
       if (pb.sleepState === external_p2_["Body"].SLEEPING) return;
-      var output = body.genome.activate(_this.input);
       var vel = Math.sqrt(external_p2_["vec2"].squaredLength(pb.velocity));
+
+      if (body.options.inputVelocity) {
+        _this.input.push(vel / 42);
+      }
+
+      if (body.options.inputWheel) {
+        _this.input.push(normalizeAngle(body.frontWheel.steerValue));
+      }
+
+      var output = body.genome.activate(_this.input);
       var isVelNaN = isNaN(vel);
 
       for (var _i = 0; _i < output.length; _i++) {
@@ -336,7 +339,8 @@ function normalizeAngle(angle) {
         }
       }
 
-      var steeringChoice = indexOfMaximum(output.slice(0, 2));
+      var offset = body.options.holdWheel !== undefined ? 1 : 0;
+      var steeringChoice = indexOfMaximum(output.slice(0, 2 + offset));
       var dir = -1;
 
       if (steeringChoice === 0) {
@@ -349,7 +353,7 @@ function normalizeAngle(angle) {
         }
       }
 
-      var speed = indexOfMaximum(output.slice(2, output.length));
+      var speed = indexOfMaximum(output.slice(2 + offset, 4 + offset));
 
       if (speed === 0) {
         speed = -1;
@@ -359,7 +363,7 @@ function normalizeAngle(angle) {
       if (drawArea === undefined) return;
       drawArea.lineStyle(5, 0x0000FF, 0xFF);
       drawArea.moveTo(pb.position[0], pb.position[1]);
-      var angle = body.frontWheel.steerValue + pb.angle;
+      var angle = body.frontWheel.steerValue;
       drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed, pb.position[1] + Math.cos(angle) * -100 * speed);
     });
   }
@@ -647,6 +651,20 @@ function getDirection(x, y, w, h) {
   return 'onScreen';
 }
 
+function createGroup(walls, world) {
+  var groups = [];
+
+  for (var i = 0; i < 5; i++) {
+    groups.push(roadPart(0, 0, world, walls.map(function (wallDefinition) {
+      var newDefinition = wallDefinition.slice(0);
+      newDefinition.push(world);
+      return wall.apply(null, newDefinition);
+    })));
+  }
+
+  return groups;
+}
+
 /* harmony default export */ var roadDirector = (external_ces_["System"].extend({
   getRoomID: function getRoomID() {
     return this.position[0] + ',' + this.position[1];
@@ -661,14 +679,14 @@ function getDirection(x, y, w, h) {
     this.position = [0, 0];
     this.parts = {
       '-': {
-        'group': roadPart(0, 0, this.world, [wall(0, 250, 8000, 20, this.world), wall(0, 550, 8000, 20, this.world)]),
+        'group': createGroup([[400, 250, 800, 20], [400, 550, 800, 20]], this.world),
         'possibleParts': {
           'left': ['upside L', 'L'],
-          'right': ['inverted upside L', 'inverted_L']
+          'right': ['reverse upside L', 'reverse L']
         }
       },
       'L': {
-        'group': roadPart(0, 0, this.world, [wall(690, 250, 300, 20, this.world), wall(250, 160, 20, 800, this.world), wall(550, 50, 20, 400, this.world), wall(650, 550, 800, 20, this.world)]),
+        'group': createGroup([[690, 250, 300, 20], [250, 160, 20, 800], [550, 50, 20, 400], [650, 550, 800, 20]], this.world),
         'possibleParts': {
           'up': ['I advanced'],
           'down': ['I advanced'],
@@ -677,7 +695,7 @@ function getDirection(x, y, w, h) {
         }
       },
       'reverse L': {
-        'group': roadPart(0, 0, this.world, [wall(110, 250, 300, 20, this.world), wall(250, 0, 20, 490, this.world), wall(550, 0, 20, 1100, this.world), wall(250, 550, 620, 20, this.world)]),
+        'group': createGroup([[110, 250, 300, 20], [250, 0, 20, 490], [550, 0, 20, 1100], [250, 550, 620, 20]], this.world),
         'possibleParts': {
           'up': ['I advanced'],
           'down': ['I advanced'],
@@ -686,7 +704,7 @@ function getDirection(x, y, w, h) {
         }
       },
       'upside L': {
-        'group': roadPart(0, 0, this.world, [wall(690, 550, 300, 20, this.world), wall(550, 740, 20, 400, this.world), wall(250, 640, 20, 800, this.world), wall(650, 250, 800, 20, this.world)]),
+        'group': createGroup([[690, 550, 300, 20], [550, 740, 20, 400], [250, 640, 20, 800], [650, 250, 800, 20]], this.world),
         'possibleParts': {
           'up': ['I advanced'],
           'down': ['I advanced'],
@@ -695,7 +713,7 @@ function getDirection(x, y, w, h) {
         }
       },
       'reverse upside L': {
-        'group': roadPart(0, 0, this.world, [wall(110, 550, 300, 20, this.world), wall(250, 740, 20, 400, this.world), wall(550, 640, 20, 800, this.world), wall(150, 250, 800, 20, this.world)]),
+        'group': createGroup([[110, 550, 300, 20], [250, 740, 20, 400], [550, 640, 20, 800], [150, 250, 800, 20]], this.world),
         'possibleParts': {
           'up': ['I advanced'],
           'down': ['I advanced'],
@@ -704,21 +722,21 @@ function getDirection(x, y, w, h) {
         }
       },
       'I basic': {
-        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'group': createGroup([[250, 0, 20, 800], [550, 0, 20, 800]], this.world),
         'possibleParts': {
           'up': ['I basic'],
           'down': ['I basic']
         }
       },
       'I with obstructions': {
-        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world), wall(300, 100, 100, 20, this.world), wall(500, 600, 100, 20, this.world)]),
+        'group': createGroup([[250, 0, 20, 800], [550, 0, 20, 800], [300, 100, 100, 20], [500, 600, 100, 20]], this.world),
         'possibleParts': {
           'up': ['I with obstructions'],
           'down': ['I with obstructions']
         }
       },
       'I advanced': {
-        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'group': createGroup([[250, 400, 20, 800], [550, 400, 20, 800]], this.world),
         'possibleParts': {
           'down': ['reverse upside L', 'upside L'],
           'up': ['reverse L', 'L']
@@ -727,15 +745,32 @@ function getDirection(x, y, w, h) {
     };
     Object.keys(this.parts).forEach(function (key) {
       if (key !== _this.STARTING_PIECE) {
-        _this.parts[key]['group'].moveAbsolute(50000, 50000);
+        _this.parts[key]['group'].forEach(function (part) {
+          return part.moveAbsolute(50000, 50000);
+        });
       }
     });
+    this.currentPart = this.parts[this.STARTING_PIECE];
     this.rooms[this.getRoomID()] = {
       entryPoint: [400, 400],
       distance: 0
     };
+    Object.keys(this.currentPart['possibleParts']).forEach(function (direction, index) {
+      var dir = [0, 0];
+      if (direction === 'up') dir[1] += 1;
+      if (direction === 'down') dir[1] -= 1;
+      if (direction === 'left') dir[0] -= 1;
+      if (direction === 'right') dir[0] += 1;
+      var pos = [_this.position[0] + dir[0], _this.position[1] + dir[1]];
+      var rng = new external_chance_default.a('RNG' + pos[0] + ',' + pos[1]);
+      var piece = rng.pickone(_this.currentPart['possibleParts'][direction]);
+
+      _this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800);
+    });
   },
   reset: function reset(startingPiece) {
+    var _this2 = this;
+
     this.STARTING_PIECE = startingPiece || this.STARTING_PIECE;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
@@ -744,9 +779,25 @@ function getDirection(x, y, w, h) {
       entryPoint: [400, 400],
       distance: 0
     };
-    this.currentPart['group'].moveAbsolute(50000, 50000);
+    Object.keys(this.parts).forEach(function (key) {
+      _this2.parts[key]['group'].forEach(function (part) {
+        return part.moveAbsolute(50000, 50000);
+      });
+    });
     this.currentPart = this.parts[this.STARTING_PIECE];
-    this.currentPart['group'].moveAbsolute(0, 0);
+    this.currentPart['group'][0].moveAbsolute(0, 0);
+    Object.keys(this.currentPart['possibleParts']).forEach(function (direction, index) {
+      var dir = [0, 0];
+      if (direction === 'up') dir[1] += 1;
+      if (direction === 'down') dir[1] -= 1;
+      if (direction === 'left') dir[0] -= 1;
+      if (direction === 'right') dir[0] += 1;
+      var pos = [_this2.position[0] + dir[0], _this2.position[1] + dir[1]];
+      var rng = new external_chance_default.a('RNG' + pos[0] + ',' + pos[1]);
+      var piece = rng.pickone(_this2.currentPart['possibleParts'][direction]);
+
+      _this2.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800);
+    });
   },
   setCar: function setCar(car) {
     this.car = car;
@@ -760,6 +811,8 @@ function getDirection(x, y, w, h) {
     return null;
   },
   swapNextRoadPart: function swapNextRoadPart(direction) {
+    var _this3 = this;
+
     if (this.currentPart === undefined) return;
     var possiblePieces = this.currentPart['possibleParts'][direction];
     if (possiblePieces.length === 0) return;
@@ -767,7 +820,9 @@ function getDirection(x, y, w, h) {
     if (direction === 'down') this.position[1] -= 1;
     if (direction === 'left') this.position[0] -= 1;
     if (direction === 'right') this.position[0] += 1;
-    this.currentPart['group'].moveAbsolute(50000, 50000);
+    this.currentPart['group'].forEach(function (part) {
+      return part.moveAbsolute(50000, 50000);
+    });
     this.rng = new external_chance_default.a('RNG' + this.position[0] + ',' + this.position[1]);
 
     if (this.position[0] === 0 && this.position[1] === 0) {
@@ -776,7 +831,19 @@ function getDirection(x, y, w, h) {
       this.currentPart = this.parts[this.rng.pickone(possiblePieces)];
     }
 
-    this.currentPart['group'].moveAbsolute(0, 0);
+    this.currentPart['group'][0].moveAbsolute(0, 0);
+    Object.keys(this.currentPart['possibleParts']).forEach(function (direction, index) {
+      var dir = [0, 0];
+      if (direction === 'up') dir[1] += 1;
+      if (direction === 'down') dir[1] -= 1;
+      if (direction === 'left') dir[0] -= 1;
+      if (direction === 'right') dir[0] += 1;
+      var pos = [_this3.position[0] + dir[0], _this3.position[1] + dir[1]];
+      var rng = new external_chance_default.a('RNG' + pos[0] + ',' + pos[1]);
+      var piece = rng.pickone(_this3.currentPart['possibleParts'][direction]);
+
+      _this3.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800);
+    });
     this.moveCarBackToScreen(direction);
   },
   moveCarBackToScreen: function moveCarBackToScreen(direction) {
@@ -800,7 +867,7 @@ function getDirection(x, y, w, h) {
     };
   },
   update: function update(dt) {
-    var _this2 = this;
+    var _this4 = this;
 
     if (this.currentPart === undefined) {
       this.currentPart = this.parts[this.STARTING_PIECE];
@@ -810,7 +877,7 @@ function getDirection(x, y, w, h) {
     this.rooms[this.getRoomID()].distance = external_p2_["vec2"].distance(this.rooms[this.getRoomID()].entryPoint, pos);
     this.car.getComponent('car').fitness = 0;
     Object.keys(this.rooms).forEach(function (key) {
-      _this2.car.getComponent('car').fitness += _this2.rooms[key].distance;
+      _this4.car.getComponent('car').fitness += _this4.rooms[key].distance;
     });
 
     if (pos !== null) {
@@ -891,7 +958,8 @@ function () {
 
         this.physicsSystem = new physics();
         this.world.addSystem(this.physicsSystem);
-        this.world.addSystem(new systems_car());
+        var carSystem = new systems_car();
+        this.world.addSystem(carSystem);
         this.car = entities_car(400.0, 400.0, this.world, this.genome, this.loader);
         this.roadDirector = new roadDirector();
         this.roadDirector.setup(this.world, startingPiece);
@@ -906,13 +974,14 @@ function () {
     }
   }, {
     key: "evaluate",
-    value: function evaluate(genome, startingPiece) {
+    value: function evaluate(genome, startingPiece, options) {
       this.destroy();
       this.genome = genome;
       this.init(this.canvasElement, startingPiece);
       this.acc = 0;
       this.lastDt = null;
       var t = this;
+      this.car.getComponent('car').options = options || {};
       return new Promise(function (resolve) {
         t.onFinish = resolve;
       });

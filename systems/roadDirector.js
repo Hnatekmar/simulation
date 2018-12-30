@@ -12,6 +12,20 @@ function getDirection (x, y, w, h) {
     return 'onScreen'
 }
 
+function createGroup(walls, world) {
+    let groups = []
+    for (let i = 0; i < 5; i++) {
+        groups.push(
+            RoadPart(0, 0, world, walls.map((wallDefinition) => {
+                let newDefinition = wallDefinition.slice(0)
+                newDefinition.push(world)
+                return Wall.apply(null, newDefinition)
+            }))
+        )
+    }
+    return groups
+
+}
 
 export default CES.System.extend({
     getRoomID: function () {
@@ -25,22 +39,22 @@ export default CES.System.extend({
         this.position = [0, 0]
         this.parts = {
             '-': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(0, 250, 8000, 20, this.world),
-                    Wall(0, 550, 8000, 20, this.world)
-                ]),
+                'group': createGroup([
+                    [400, 250, 800, 20],
+                    [400, 550, 800, 20]
+                ], this.world),
                 'possibleParts': {
                     'left': ['upside L', 'L'],
-                    'right': ['inverted upside L', 'inverted_L']
+                    'right': ['reverse upside L', 'reverse L']
                 }
             },
             'L': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(690, 250, 300, 20, this.world),
-                    Wall(250, 160, 20, 800, this.world),
-                    Wall(550, 50, 20, 400, this.world),
-                    Wall(650, 550, 800, 20, this.world)
-                ]),
+                'group': createGroup([
+                    [690, 250, 300, 20],
+                    [250, 160, 20, 800],
+                    [550, 50, 20, 400],
+                    [650, 550, 800, 20]
+                ], this.world),
                 'possibleParts': {
                     'up': ['I advanced'],
                     'down': ['I advanced'],
@@ -49,12 +63,12 @@ export default CES.System.extend({
                 }
             },
             'reverse L': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(110, 250, 300, 20, this.world),
-                    Wall(250, 0, 20, 490, this.world),
-                    Wall(550, 0, 20, 1100, this.world),
-                    Wall(250, 550, 620, 20, this.world)
-                ]),
+                'group': createGroup([
+                    [110, 250, 300, 20],
+                    [250, 0, 20, 490],
+                    [550, 0, 20, 1100],
+                    [250, 550, 620, 20]
+                ], this.world),
                 'possibleParts': {
                     'up': ['I advanced'],
                     'down': ['I advanced'],
@@ -63,12 +77,12 @@ export default CES.System.extend({
                 }
             },
             'upside L': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(690, 550, 300, 20, this.world),
-                    Wall(550, 740, 20, 400, this.world),
-                    Wall(250, 640, 20, 800, this.world),
-                    Wall(650, 250, 800, 20, this.world)
-                ]),
+                'group': createGroup([
+                    [690, 550, 300, 20],
+                    [550, 740, 20, 400],
+                    [250, 640, 20, 800],
+                    [650, 250, 800, 20]
+                ], this.world),
                 'possibleParts': {
                     'up': ['I advanced'],
                     'down': ['I advanced'],
@@ -77,12 +91,12 @@ export default CES.System.extend({
                 }
             },
             'reverse upside L': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(110, 550, 300, 20, this.world),
-                    Wall(250, 740, 20, 400, this.world),
-                    Wall(550, 640, 20, 800, this.world),
-                    Wall(150, 250, 800, 20, this.world)
-                ]),
+                'group': createGroup([
+                    [110, 550, 300, 20],
+                    [250, 740, 20, 400],
+                    [550, 640, 20, 800],
+                    [150, 250, 800, 20]
+                ], this.world),
                 'possibleParts': {
                     'up': ['I advanced'],
                     'down': ['I advanced'],
@@ -91,32 +105,32 @@ export default CES.System.extend({
                 }
             },
             'I basic': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(250, 0, 20, 8000, this.world),
-                    Wall(550, 0, 20, 8000, this.world)
-                ]),
+                'group': createGroup( [
+                    [250, 0, 20, 800],
+                    [550, 0, 20, 800]
+                ], this.world),
                 'possibleParts': {
                     'up': ['I basic'],
                     'down': ['I basic']
                 }
             },
             'I with obstructions': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(250, 0, 20, 8000, this.world),
-                    Wall(550, 0, 20, 8000, this.world),
-                    Wall(300, 100, 100, 20, this.world),
-                    Wall(500, 600, 100, 20, this.world),
-                ]),
+                'group': createGroup( [
+                    [250, 0, 20, 800],
+                    [550, 0, 20, 800],
+                    [300, 100, 100, 20],
+                    [500, 600, 100, 20],
+                ], this.world),
                 'possibleParts': {
                     'up': ['I with obstructions'],
                     'down': ['I with obstructions']
                 }
             },
             'I advanced': {
-                'group': RoadPart(0, 0, this.world, [
-                    Wall(250, 0, 20, 8000, this.world),
-                    Wall(550, 0, 20, 8000, this.world)
-                ]),
+                'group': createGroup( [
+                    [250, 400, 20, 800],
+                    [550, 400, 20, 800]
+                ], this.world),
                 'possibleParts': {
                     'down': ['reverse upside L', 'upside L'],
                     'up': ['reverse L', 'L']
@@ -125,13 +139,25 @@ export default CES.System.extend({
         }
         Object.keys(this.parts).forEach((key) => {
             if (key !== this.STARTING_PIECE) {
-                this.parts[key]['group'].moveAbsolute(50000, 50000)
+                this.parts[key]['group'].forEach((part) => part.moveAbsolute(50000, 50000))
             }
         })
+        this.currentPart = this.parts[this.STARTING_PIECE]
         this.rooms[this.getRoomID()] = {
             entryPoint: [400, 400],
             distance: 0
         }
+        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+            let dir = [0, 0]
+            if (direction === 'up') dir[1] += 1
+            if (direction === 'down') dir[1] -= 1
+            if (direction === 'left') dir[0] -= 1
+            if (direction === 'right') dir[0] += 1
+            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        })
     },
     reset: function (startingPiece) {
         this.STARTING_PIECE = startingPiece || this.STARTING_PIECE
@@ -142,9 +168,22 @@ export default CES.System.extend({
             entryPoint: [400, 400],
             distance: 0
         }
-        this.currentPart['group'].moveAbsolute(50000,50000)
+        Object.keys(this.parts).forEach((key) => {
+            this.parts[key]['group'].forEach((part) => part.moveAbsolute(50000, 50000))
+        })
         this.currentPart = this.parts[this.STARTING_PIECE]
-        this.currentPart['group'].moveAbsolute(0, 0)
+        this.currentPart['group'][0].moveAbsolute(0, 0)
+        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+            let dir = [0, 0]
+            if (direction === 'up') dir[1] += 1
+            if (direction === 'down') dir[1] -= 1
+            if (direction === 'left') dir[0] -= 1
+            if (direction === 'right') dir[0] += 1
+            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        })
     },
     setCar: function (car) {
         this.car = car
@@ -164,14 +203,25 @@ export default CES.System.extend({
         if (direction === 'down') this.position[1] -= 1
         if (direction === 'left') this.position[0] -= 1
         if (direction === 'right') this.position[0] += 1
-        this.currentPart['group'].moveAbsolute(50000, 50000)
+        this.currentPart['group'].forEach((part) => part.moveAbsolute(50000, 50000))
         this.rng = new Chance('RNG' + this.position[0] + ',' + this.position[1])
         if (this.position[0] === 0 && this.position[1] === 0) {
             this.currentPart = this.parts[this.STARTING_PIECE]
         } else {
             this.currentPart = this.parts[this.rng.pickone(possiblePieces)]
         }
-        this.currentPart['group'].moveAbsolute(0, 0)
+        this.currentPart['group'][0].moveAbsolute(0, 0)
+        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+            let dir = [0, 0]
+            if (direction === 'up') dir[1] += 1
+            if (direction === 'down') dir[1] -= 1
+            if (direction === 'left') dir[0] -= 1
+            if (direction === 'right') dir[0] += 1
+            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        })
         this.moveCarBackToScreen(direction)
     },
     moveCarBackToScreen: function (direction) {
