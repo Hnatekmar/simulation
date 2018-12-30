@@ -30,8 +30,8 @@ export default CES.System.extend({
                     Wall(0, 550, 8000, 20, this.world)
                 ]),
                 'possibleParts': {
-                    'left': ['Cross', 'T'],
-                    'right': ['Cross', 'T']
+                    'left': ['upside L', 'L'],
+                    'right': ['inverted upside L', 'inverted_L']
                 }
             },
             'L': {
@@ -42,8 +42,10 @@ export default CES.System.extend({
                     Wall(650, 550, 800, 20, this.world)
                 ]),
                 'possibleParts': {
-                    'left': ['Cross', 'T'],
-                    'right': ['Cross', 'T']
+                    'up': ['I advanced'],
+                    'down': ['I advanced'],
+                    'left': ['-'],
+                    'right': ['-']
                 }
             },
             'reverse L': {
@@ -54,8 +56,10 @@ export default CES.System.extend({
                     Wall(250, 550, 620, 20, this.world)
                 ]),
                 'possibleParts': {
-                    'left': ['Cross', 'T'],
-                    'right': ['Cross', 'T']
+                    'up': ['I advanced'],
+                    'down': ['I advanced'],
+                    'left': ['-'],
+                    'right': ['-']
                 }
             },
             'upside L': {
@@ -66,11 +70,13 @@ export default CES.System.extend({
                     Wall(650, 250, 800, 20, this.world)
                 ]),
                 'possibleParts': {
-                    'left': ['Cross', 'T'],
-                    'right': ['Cross', 'T']
+                    'up': ['I advanced'],
+                    'down': ['I advanced'],
+                    'left': ['-'],
+                    'right': ['-']
                 }
             },
-            'inverted upside L': {
+            'reverse upside L': {
                 'group': RoadPart(0, 0, this.world, [
                     Wall(110, 550, 300, 20, this.world),
                     Wall(250, 740, 20, 400, this.world),
@@ -78,18 +84,20 @@ export default CES.System.extend({
                     Wall(150, 250, 800, 20, this.world)
                 ]),
                 'possibleParts': {
-                    'left': ['Cross', 'T'],
-                    'right': ['Cross', 'T']
+                    'up': ['I advanced'],
+                    'down': ['I advanced'],
+                    'left': ['-'],
+                    'right': ['-']
                 }
             },
-            'I': {
+            'I basic': {
                 'group': RoadPart(0, 0, this.world, [
                     Wall(250, 0, 20, 8000, this.world),
                     Wall(550, 0, 20, 8000, this.world)
                 ]),
                 'possibleParts': {
-                    'up': ['I'],
-                    'down': ['I']
+                    'up': ['I basic'],
+                    'down': ['I basic']
                 }
             },
             'I with obstructions': {
@@ -102,6 +110,16 @@ export default CES.System.extend({
                 'possibleParts': {
                     'up': ['I with obstructions'],
                     'down': ['I with obstructions']
+                }
+            },
+            'I advanced': {
+                'group': RoadPart(0, 0, this.world, [
+                    Wall(250, 0, 20, 8000, this.world),
+                    Wall(550, 0, 20, 8000, this.world)
+                ]),
+                'possibleParts': {
+                    'down': ['reverse upside L', 'upside L'],
+                    'up': ['reverse L', 'L']
                 }
             },
         }

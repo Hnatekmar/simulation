@@ -663,43 +663,51 @@ function getDirection(x, y, w, h) {
       '-': {
         'group': roadPart(0, 0, this.world, [wall(0, 250, 8000, 20, this.world), wall(0, 550, 8000, 20, this.world)]),
         'possibleParts': {
-          'left': ['Cross', 'T'],
-          'right': ['Cross', 'T']
+          'left': ['upside L', 'L'],
+          'right': ['inverted upside L', 'inverted_L']
         }
       },
       'L': {
         'group': roadPart(0, 0, this.world, [wall(690, 250, 300, 20, this.world), wall(250, 160, 20, 800, this.world), wall(550, 50, 20, 400, this.world), wall(650, 550, 800, 20, this.world)]),
         'possibleParts': {
-          'left': ['Cross', 'T'],
-          'right': ['Cross', 'T']
+          'up': ['I advanced'],
+          'down': ['I advanced'],
+          'left': ['-'],
+          'right': ['-']
         }
       },
       'reverse L': {
         'group': roadPart(0, 0, this.world, [wall(110, 250, 300, 20, this.world), wall(250, 0, 20, 490, this.world), wall(550, 0, 20, 1100, this.world), wall(250, 550, 620, 20, this.world)]),
         'possibleParts': {
-          'left': ['Cross', 'T'],
-          'right': ['Cross', 'T']
+          'up': ['I advanced'],
+          'down': ['I advanced'],
+          'left': ['-'],
+          'right': ['-']
         }
       },
       'upside L': {
         'group': roadPart(0, 0, this.world, [wall(690, 550, 300, 20, this.world), wall(550, 740, 20, 400, this.world), wall(250, 640, 20, 800, this.world), wall(650, 250, 800, 20, this.world)]),
         'possibleParts': {
-          'left': ['Cross', 'T'],
-          'right': ['Cross', 'T']
+          'up': ['I advanced'],
+          'down': ['I advanced'],
+          'left': ['-'],
+          'right': ['-']
         }
       },
-      'inverted upside L': {
+      'reverse upside L': {
         'group': roadPart(0, 0, this.world, [wall(110, 550, 300, 20, this.world), wall(250, 740, 20, 400, this.world), wall(550, 640, 20, 800, this.world), wall(150, 250, 800, 20, this.world)]),
         'possibleParts': {
-          'left': ['Cross', 'T'],
-          'right': ['Cross', 'T']
+          'up': ['I advanced'],
+          'down': ['I advanced'],
+          'left': ['-'],
+          'right': ['-']
         }
       },
-      'I': {
+      'I basic': {
         'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
         'possibleParts': {
-          'up': ['I'],
-          'down': ['I']
+          'up': ['I basic'],
+          'down': ['I basic']
         }
       },
       'I with obstructions': {
@@ -707,6 +715,13 @@ function getDirection(x, y, w, h) {
         'possibleParts': {
           'up': ['I with obstructions'],
           'down': ['I with obstructions']
+        }
+      },
+      'I advanced': {
+        'group': roadPart(0, 0, this.world, [wall(250, 0, 20, 8000, this.world), wall(550, 0, 20, 8000, this.world)]),
+        'possibleParts': {
+          'down': ['reverse upside L', 'upside L'],
+          'up': ['reverse L', 'L']
         }
       }
     };
