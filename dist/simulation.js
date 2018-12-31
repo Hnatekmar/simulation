@@ -359,12 +359,12 @@ function normalizeAngle(angle) {
         speed = -1;
       }
 
-      body.backWheel.engineForce = dir * speed * 9000;
-      if (drawArea === undefined) return;
-      drawArea.lineStyle(5, 0x0000FF, 0xFF);
-      drawArea.moveTo(pb.position[0], pb.position[1]);
-      var angle = body.frontWheel.steerValue;
-      drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed, pb.position[1] + Math.cos(angle) * -100 * speed);
+      body.backWheel.engineForce = dir * speed * 9000; // if (drawArea === undefined) return
+      // drawArea.lineStyle(5, 0x0000FF, 0xFF);
+      // drawArea.moveTo(pb.position[0], pb.position[1])
+      // let angle = body.frontWheel.steerValue
+      // drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed,
+      //                 pb.position[1] + Math.cos(angle) * -100 * speed)
     });
   }
 }));
@@ -645,9 +645,9 @@ var external_chance_default = /*#__PURE__*/__webpack_require__.n(external_chance
 
 function getDirection(x, y, w, h) {
   if (x >= w) return 'right';
-  if (y >= h) return 'up';
+  if (y >= h) return 'down';
   if (x <= 0) return 'left';
-  if (y <= 0) return 'down';
+  if (y <= 0) return 'up';
   return 'onScreen';
 }
 
@@ -678,47 +678,46 @@ function createGroup(walls, world) {
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];
     this.parts = {
-      '-': {
+      '- up': {
         'group': createGroup([[400, 250, 800, 20], [400, 550, 800, 20]], this.world),
         'possibleParts': {
-          'left': ['upside L', 'L'],
-          'right': ['reverse upside L', 'reverse L']
+          'left': ['upside L'],
+          'right': ['reverse upside L']
+        }
+      },
+      '- down': {
+        'group': createGroup([[400, 250, 800, 20], [400, 550, 800, 20]], this.world),
+        'possibleParts': {
+          'left': ['L'],
+          'right': ['reverse L']
         }
       },
       'L': {
         'group': createGroup([[690, 250, 300, 20], [250, 160, 20, 800], [550, 50, 20, 400], [650, 550, 800, 20]], this.world),
         'possibleParts': {
-          'up': ['I advanced'],
-          'down': ['I advanced'],
-          'left': ['-'],
-          'right': ['-']
+          'up': ['I advanced right'],
+          'right': ['- down']
         }
       },
       'reverse L': {
         'group': createGroup([[110, 250, 300, 20], [250, 0, 20, 490], [550, 0, 20, 1100], [250, 550, 620, 20]], this.world),
         'possibleParts': {
-          'up': ['I advanced'],
-          'down': ['I advanced'],
-          'left': ['-'],
-          'right': ['-']
+          'up': ['I advanced left'],
+          'left': ['- down']
         }
       },
       'upside L': {
         'group': createGroup([[690, 550, 300, 20], [550, 740, 20, 400], [250, 640, 20, 800], [650, 250, 800, 20]], this.world),
         'possibleParts': {
-          'up': ['I advanced'],
-          'down': ['I advanced'],
-          'left': ['-'],
-          'right': ['-']
+          'down': ['I advanced left'],
+          'right': ['- up']
         }
       },
       'reverse upside L': {
         'group': createGroup([[110, 550, 300, 20], [250, 740, 20, 400], [550, 640, 20, 800], [150, 250, 800, 20]], this.world),
         'possibleParts': {
-          'up': ['I advanced'],
-          'down': ['I advanced'],
-          'left': ['-'],
-          'right': ['-']
+          'down': ['I advanced right'],
+          'left': ['- up']
         }
       },
       'I basic': {
@@ -735,11 +734,18 @@ function createGroup(walls, world) {
           'down': ['I with obstructions']
         }
       },
-      'I advanced': {
+      'I advanced right': {
         'group': createGroup([[250, 400, 20, 800], [550, 400, 20, 800]], this.world),
         'possibleParts': {
-          'down': ['reverse upside L', 'upside L'],
-          'up': ['reverse L', 'L']
+          'up': ['reverse upside L'],
+          'down': ['reverse L']
+        }
+      },
+      'I advanced left': {
+        'group': createGroup([[250, 400, 20, 800], [550, 400, 20, 800]], this.world),
+        'possibleParts': {
+          'up': ['upside L'],
+          'down': ['L']
         }
       }
     };
@@ -850,9 +856,9 @@ function createGroup(walls, world) {
     var body = this.car.getComponent('physics').body;
     var newPos = [0, 0];
 
-    if (direction === 'up') {
+    if (direction === 'down') {
       newPos = [body.position[0], 0];
-    } else if (direction === 'down') {
+    } else if (direction === 'up') {
       newPos = [body.position[0], 800];
     } else if (direction === 'left') {
       newPos = [800, body.position[1]];

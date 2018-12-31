@@ -6,9 +6,9 @@ import * as p2 from 'p2'
 
 function getDirection (x, y, w, h) {
     if (x >= w) return 'right'
-    if (y >= h) return 'up'
+    if (y >= h) return 'down'
     if (x <= 0) return 'left'
-    if (y <= 0) return 'down'
+    if (y <= 0) return 'up'
     return 'onScreen'
 }
 
@@ -38,14 +38,24 @@ export default CES.System.extend({
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
         this.parts = {
-            '-': {
+            '- up': {
                 'group': createGroup([
                     [400, 250, 800, 20],
                     [400, 550, 800, 20]
                 ], this.world),
                 'possibleParts': {
-                    'left': ['upside L', 'L'],
-                    'right': ['reverse upside L', 'reverse L']
+                    'left': ['upside L'],
+                    'right': ['reverse upside L']
+                }
+            },
+            '- down': {
+                'group': createGroup([
+                    [400, 250, 800, 20],
+                    [400, 550, 800, 20]
+                ], this.world),
+                'possibleParts': {
+                    'left': ['L'],
+                    'right': ['reverse L']
                 }
             },
             'L': {
@@ -56,10 +66,8 @@ export default CES.System.extend({
                     [650, 550, 800, 20]
                 ], this.world),
                 'possibleParts': {
-                    'up': ['I advanced'],
-                    'down': ['I advanced'],
-                    'left': ['-'],
-                    'right': ['-']
+                    'up': ['I advanced right'],
+                    'right': ['- down']
                 }
             },
             'reverse L': {
@@ -70,10 +78,8 @@ export default CES.System.extend({
                     [250, 550, 620, 20]
                 ], this.world),
                 'possibleParts': {
-                    'up': ['I advanced'],
-                    'down': ['I advanced'],
-                    'left': ['-'],
-                    'right': ['-']
+                    'up': ['I advanced left'],
+                    'left': ['- down']
                 }
             },
             'upside L': {
@@ -84,10 +90,8 @@ export default CES.System.extend({
                     [650, 250, 800, 20]
                 ], this.world),
                 'possibleParts': {
-                    'up': ['I advanced'],
-                    'down': ['I advanced'],
-                    'left': ['-'],
-                    'right': ['-']
+                    'down': ['I advanced left'],
+                    'right': ['- up']
                 }
             },
             'reverse upside L': {
@@ -98,10 +102,8 @@ export default CES.System.extend({
                     [150, 250, 800, 20]
                 ], this.world),
                 'possibleParts': {
-                    'up': ['I advanced'],
-                    'down': ['I advanced'],
-                    'left': ['-'],
-                    'right': ['-']
+                    'down': ['I advanced right'],
+                    'left': ['- up']
                 }
             },
             'I basic': {
@@ -126,14 +128,24 @@ export default CES.System.extend({
                     'down': ['I with obstructions']
                 }
             },
-            'I advanced': {
+            'I advanced right': {
                 'group': createGroup( [
                     [250, 400, 20, 800],
                     [550, 400, 20, 800]
                 ], this.world),
                 'possibleParts': {
-                    'down': ['reverse upside L', 'upside L'],
-                    'up': ['reverse L', 'L']
+                    'up': ['reverse upside L'],
+                    'down': ['reverse L']
+                }
+            },
+            'I advanced left': {
+                'group': createGroup( [
+                    [250, 400, 20, 800],
+                    [550, 400, 20, 800]
+                ], this.world),
+                'possibleParts': {
+                    'up': ['upside L'],
+                    'down': ['L']
                 }
             },
         }
@@ -227,9 +239,9 @@ export default CES.System.extend({
     moveCarBackToScreen: function (direction) {
         let body = this.car.getComponent('physics').body
         let newPos = [0, 0]
-        if (direction === 'up') {
+        if (direction === 'down') {
             newPos = [body.position[0], 0]
-        } else if (direction === 'down') {
+        } else if (direction === 'up') {
             newPos = [body.position[0], 800]
         } else if (direction === 'left') {
             newPos = [800, body.position[1]]

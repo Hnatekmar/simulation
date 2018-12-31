@@ -126,12 +126,12 @@ export default CES.System.extend({
                 speed = -1
             }
             body.backWheel.engineForce = dir * speed * 9000
-            if (drawArea === undefined) return
-            drawArea.lineStyle(5, 0x0000FF, 0xFF);
-            drawArea.moveTo(pb.position[0], pb.position[1])
-            let angle = body.frontWheel.steerValue
-            drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed,
-                            pb.position[1] + Math.cos(angle) * -100 * speed)
+            // if (drawArea === undefined) return
+            // drawArea.lineStyle(5, 0x0000FF, 0xFF);
+            // drawArea.moveTo(pb.position[0], pb.position[1])
+            // let angle = body.frontWheel.steerValue
+            // drawArea.lineTo(pb.position[0] - Math.sin(angle) * 100 * speed,
+            //                 pb.position[1] + Math.cos(angle) * -100 * speed)
         })
     }
 })
