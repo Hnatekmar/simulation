@@ -5,10 +5,10 @@ import Chance from 'chance'
 import * as p2 from 'p2'
 
 function getDirection (x, y, w, h) {
-    if (x >= w) return 'right'
-    if (y >= h) return 'down'
-    if (x <= 0) return 'left'
-    if (y <= 0) return 'up'
+    if (x > w) return 'right'
+    if (y > h) return 'down'
+    if (x < 0) return 'left'
+    if (y < 0) return 'up'
     return 'onScreen'
 }
 
@@ -66,7 +66,7 @@ export default CES.System.extend({
                     [650, 550, 800, 20]
                 ], this.world),
                 'possibleParts': {
-                    'up': ['I advanced right'],
+                    'up': ['I advanced left'],
                     'right': ['- down']
                 }
             },
@@ -210,7 +210,7 @@ export default CES.System.extend({
     swapNextRoadPart: function (direction) {
         if (this.currentPart === undefined) return
         let possiblePieces = this.currentPart['possibleParts'][direction]
-        if (possiblePieces.length === 0) return
+        if (possiblePieces.length === 0 || possiblePieces === undefined) return
         if (direction === 'up') this.position[1] += 1
         if (direction === 'down') this.position[1] -= 1
         if (direction === 'left') this.position[0] -= 1

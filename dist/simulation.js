@@ -644,10 +644,10 @@ var external_chance_default = /*#__PURE__*/__webpack_require__.n(external_chance
 
 
 function getDirection(x, y, w, h) {
-  if (x >= w) return 'right';
-  if (y >= h) return 'down';
-  if (x <= 0) return 'left';
-  if (y <= 0) return 'up';
+  if (x > w) return 'right';
+  if (y > h) return 'down';
+  if (x < 0) return 'left';
+  if (y < 0) return 'up';
   return 'onScreen';
 }
 
@@ -695,7 +695,7 @@ function createGroup(walls, world) {
       'L': {
         'group': createGroup([[690, 250, 300, 20], [250, 160, 20, 800], [550, 50, 20, 400], [650, 550, 800, 20]], this.world),
         'possibleParts': {
-          'up': ['I advanced right'],
+          'up': ['I advanced left'],
           'right': ['- down']
         }
       },
@@ -821,7 +821,7 @@ function createGroup(walls, world) {
 
     if (this.currentPart === undefined) return;
     var possiblePieces = this.currentPart['possibleParts'][direction];
-    if (possiblePieces.length === 0) return;
+    if (possiblePieces.length === 0 || possiblePieces === undefined) return;
     if (direction === 'up') this.position[1] += 1;
     if (direction === 'down') this.position[1] -= 1;
     if (direction === 'left') this.position[0] -= 1;
