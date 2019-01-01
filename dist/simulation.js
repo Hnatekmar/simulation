@@ -750,6 +750,9 @@ function createGroup(walls, world) {
       }
     };
     Object.keys(this.parts).forEach(function (key) {
+      // For debugging purposes
+      _this.parts[key].name = key;
+
       if (key !== _this.STARTING_PIECE) {
         _this.parts[key]['group'].forEach(function (part) {
           return part.moveAbsolute(50000, 50000);
@@ -872,6 +875,13 @@ function createGroup(walls, world) {
       distance: 0
     };
   },
+  switchRoom: function switchRoom(piece) {
+    this.currentPart['group'].forEach(function (part) {
+      return part.moveAbsolute(50000, 50000);
+    });
+    this.currentPart = this.parts[piece];
+    this.parts[piece]['group'][0].moveAbsolute(0, 0);
+  },
   update: function update(dt) {
     var _this4 = this;
 
@@ -885,6 +895,13 @@ function createGroup(walls, world) {
     Object.keys(this.rooms).forEach(function (key) {
       _this4.car.getComponent('car').fitness += _this4.rooms[key].distance;
     });
+    var options = this.car.getComponent('car').options;
+
+    if (!options && !options.player) {
+      this.car.getComponent('car').fitness = options.fitness;
+      switchRoom(options.piece);
+      return;
+    }
 
     if (pos !== null) {
       var direction = getDirection(pos[0], pos[1], 800, 800);
@@ -996,6 +1013,11 @@ function () {
     key: "fitness",
     value: function fitness() {
       return this.car.getComponent('car').fitness;
+    }
+  }, {
+    key: "currentPiece",
+    value: function currentPiece() {
+      return this.roadDirector.currentPart.name;
     }
   }, {
     key: "isRunning",

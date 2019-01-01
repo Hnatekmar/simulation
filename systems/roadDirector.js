@@ -150,6 +150,8 @@ export default CES.System.extend({
             },
         }
         Object.keys(this.parts).forEach((key) => {
+            // For debugging purposes
+            this.parts[key].name = key
             if (key !== this.STARTING_PIECE) {
                 this.parts[key]['group'].forEach((part) => part.moveAbsolute(50000, 50000))
             }
@@ -254,6 +256,11 @@ export default CES.System.extend({
             distance: 0
         }
     },
+    switchRoom: function(piece) {
+        this.currentPart['group'].forEach((part) => part.moveAbsolute(50000, 50000))
+        this.currentPart = this.parts[piece]
+        this.parts[piece]['group'][0].moveAbsolute(0, 0)
+    },
     update: function (dt) {
         if (this.currentPart === undefined) {
             this.currentPart = this.parts[this.STARTING_PIECE]
@@ -264,6 +271,12 @@ export default CES.System.extend({
         Object.keys(this.rooms).forEach((key) => {
             this.car.getComponent('car').fitness += this.rooms[key].distance
         })
+        let options = this.car.getComponent('car').options
+        if (!options && !options.player) {
+            this.car.getComponent('car').fitness = options.fitness
+            switchRoom(options.piece);
+            return
+        }
         if (pos !== null) {
             let direction = getDirection(pos[0], pos[1], 800, 800)
             if (direction !== 'onScreen') {
