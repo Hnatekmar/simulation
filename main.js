@@ -81,6 +81,10 @@ export default class Simulation {
         return this.car.getComponent('car').fitness
     }
 
+    currentPiece() {
+        return this.roadDirector.currentPart.name
+    }
+
     isRunning() {
         return this.acc < this.time && (this.car.getComponent('physics').body.sleepState !== p2.Body.SLEEPING)
     }
