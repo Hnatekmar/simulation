@@ -897,7 +897,7 @@ function createGroup(walls, world) {
     });
     var options = this.car.getComponent('car').options;
 
-    if (!options && !options.player) {
+    if (!options && options.player) {
       this.car.getComponent('car').fitness = options.fitness;
       switchRoom(options.piece);
       return;
@@ -1015,8 +1015,8 @@ function () {
       return this.car.getComponent('car').fitness;
     }
   }, {
-    key: "currentPiece",
-    value: function currentPiece() {
+    key: "currentPart",
+    value: function currentPart() {
       return this.roadDirector.currentPart.name;
     }
   }, {

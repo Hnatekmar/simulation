@@ -272,7 +272,7 @@ export default CES.System.extend({
             this.car.getComponent('car').fitness += this.rooms[key].distance
         })
         let options = this.car.getComponent('car').options
-        if (!options && !options.player) {
+        if (!options && options.player) {
             this.car.getComponent('car').fitness = options.fitness
             switchRoom(options.piece);
             return

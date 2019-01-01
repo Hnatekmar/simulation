@@ -81,7 +81,7 @@ export default class Simulation {
         return this.car.getComponent('car').fitness
     }
 
-    currentPiece() {
+    currentPart() {
         return this.roadDirector.currentPart.name
     }
 
