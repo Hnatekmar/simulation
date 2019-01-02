@@ -876,14 +876,28 @@ function createGroup(walls, world) {
     };
   },
   switchRoom: function switchRoom(piece) {
+    var _this4 = this;
+
     this.currentPart['group'].forEach(function (part) {
       return part.moveAbsolute(50000, 50000);
     });
     this.currentPart = this.parts[piece];
     this.parts[piece]['group'][0].moveAbsolute(0, 0);
+    Object.keys(this.currentPart['possibleParts']).forEach(function (direction, index) {
+      var dir = [0, 0];
+      if (direction === 'up') dir[1] += 1;
+      if (direction === 'down') dir[1] -= 1;
+      if (direction === 'left') dir[0] -= 1;
+      if (direction === 'right') dir[0] += 1;
+      var pos = [_this4.position[0] + dir[0], _this4.position[1] + dir[1]];
+      var rng = new external_chance_default.a('RNG' + pos[0] + ',' + pos[1]);
+      var piece = rng.pickone(_this4.currentPart['possibleParts'][direction]);
+
+      _this4.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800);
+    });
   },
   update: function update(dt) {
-    var _this4 = this;
+    var _this5 = this;
 
     if (this.currentPart === undefined) {
       this.currentPart = this.parts[this.STARTING_PIECE];
@@ -893,13 +907,13 @@ function createGroup(walls, world) {
     this.rooms[this.getRoomID()].distance = external_p2_["vec2"].distance(this.rooms[this.getRoomID()].entryPoint, pos);
     this.car.getComponent('car').fitness = 0;
     Object.keys(this.rooms).forEach(function (key) {
-      _this4.car.getComponent('car').fitness += _this4.rooms[key].distance;
+      _this5.car.getComponent('car').fitness += _this5.rooms[key].distance;
     });
     var options = this.car.getComponent('car').options;
 
-    if (!options && options.player) {
+    if (options && options.player) {
       this.car.getComponent('car').fitness = options.fitness;
-      switchRoom(options.piece);
+      this.switchRoom(options.piece);
       return;
     }
 

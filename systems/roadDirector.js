@@ -260,6 +260,17 @@ export default CES.System.extend({
         this.currentPart['group'].forEach((part) => part.moveAbsolute(50000, 50000))
         this.currentPart = this.parts[piece]
         this.parts[piece]['group'][0].moveAbsolute(0, 0)
+        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+            let dir = [0, 0]
+            if (direction === 'up') dir[1] += 1
+            if (direction === 'down') dir[1] -= 1
+            if (direction === 'left') dir[0] -= 1
+            if (direction === 'right') dir[0] += 1
+            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        })
     },
     update: function (dt) {
         if (this.currentPart === undefined) {
@@ -272,9 +283,9 @@ export default CES.System.extend({
             this.car.getComponent('car').fitness += this.rooms[key].distance
         })
         let options = this.car.getComponent('car').options
-        if (!options && options.player) {
+        if (options && options.player) {
             this.car.getComponent('car').fitness = options.fitness
-            switchRoom(options.piece);
+            this.switchRoom(options.piece);
             return
         }
         if (pos !== null) {
