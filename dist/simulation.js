@@ -673,7 +673,7 @@ function createGroup(walls, world) {
     var _this = this;
 
     this.rooms = {};
-    this.STARTING_PIECE = startingPiece || 'Box';
+    this.STARTING_PIECE = startingPiece || 'I basic';
     this.world = world;
     this.rng = new external_chance_default.a('RNG0,0');
     this.position = [0, 0];

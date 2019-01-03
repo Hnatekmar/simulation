@@ -33,7 +33,7 @@ export default CES.System.extend({
     },
     setup: function (world, startingPiece) {
         this.rooms = {}
-        this.STARTING_PIECE = startingPiece || 'Box'
+        this.STARTING_PIECE = startingPiece || 'I basic'
         this.world = world
         this.rng = new Chance('RNG0,0')
         this.position = [0, 0]
