@@ -20,18 +20,18 @@ export default function (x, y, world, genome, loader) {
         allowSleep: false
     })
     body.addShape(new p2.Box({
-        width: 100,
-        height: 200
+        width: 50,
+        height: 100
     }))
     entity.addComponent(new PhysicsComponent(
         body
     ))
     let car = new p2.TopDownVehicle(body)
     let frontWheel = car.addWheel({
-        localPosition: [0, 100]
+        localPosition: [0, 50]
     })
     let backWheel = car.addWheel({
-        localPosition: [0, -100]
+        localPosition: [0, -50]
     })
     entity.addComponent(new CarComponent(entity, genome, car, frontWheel, backWheel))
     world.addEntity(entity)

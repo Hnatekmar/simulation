@@ -517,16 +517,16 @@ function () {
     allowSleep: false
   });
   body.addShape(new external_p2_["Box"]({
-    width: 100,
-    height: 200
+    width: 50,
+    height: 100
   }));
   entity.addComponent(new components_physics(body));
   var car = new external_p2_["TopDownVehicle"](body);
   var frontWheel = car.addWheel({
-    localPosition: [0, 100]
+    localPosition: [0, 50]
   });
   var backWheel = car.addWheel({
-    localPosition: [0, -100]
+    localPosition: [0, -50]
   });
   entity.addComponent(new components_car(entity, genome, car, frontWheel, backWheel));
   world.addEntity(entity);
