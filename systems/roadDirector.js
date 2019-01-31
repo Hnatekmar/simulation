@@ -187,17 +187,17 @@ export default CES.System.extend({
         })
         this.currentPart = this.parts[this.STARTING_PIECE]
         this.currentPart['group'][0].moveAbsolute(0, 0)
-        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
-            let dir = [0, 0]
-            if (direction === 'up') dir[1] += 1
-            if (direction === 'down') dir[1] -= 1
-            if (direction === 'left') dir[0] -= 1
-            if (direction === 'right') dir[0] += 1
-            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
-            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
-            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
-            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
-        })
+        // Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+        //     let dir = [0, 0]
+        //     if (direction === 'up') dir[1] += 1
+        //     if (direction === 'down') dir[1] -= 1
+        //     if (direction === 'left') dir[0] -= 1
+        //     if (direction === 'right') dir[0] += 1
+        //     let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+        //     let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+        //     let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+        //     this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        // })
     },
     setCar: function (car) {
         this.car = car
@@ -225,17 +225,17 @@ export default CES.System.extend({
             this.currentPart = this.parts[this.rng.pickone(possiblePieces)]
         }
         this.currentPart['group'][0].moveAbsolute(0, 0)
-        Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
-            let dir = [0, 0]
-            if (direction === 'up') dir[1] += 1
-            if (direction === 'down') dir[1] -= 1
-            if (direction === 'left') dir[0] -= 1
-            if (direction === 'right') dir[0] += 1
-            let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
-            let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
-            let piece = rng.pickone(this.currentPart['possibleParts'][direction])
-            this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
-        })
+        // Object.keys(this.currentPart['possibleParts']).forEach((direction, index) => {
+        //     let dir = [0, 0]
+        //     if (direction === 'up') dir[1] += 1
+        //     if (direction === 'down') dir[1] -= 1
+        //     if (direction === 'left') dir[0] -= 1
+        //     if (direction === 'right') dir[0] += 1
+        //     let pos = [this.position[0] + dir[0], this.position[1] + dir[1]]
+        //     let rng = new Chance('RNG' + pos[0] + ',' + pos[1])
+        //     let piece = rng.pickone(this.currentPart['possibleParts'][direction])
+        //     this.parts[piece]['group'][index + 1].moveAbsolute(dir[0] * 800, dir[1] * 800)
+        // })
         this.moveCarBackToScreen(direction)
     },
     moveCarBackToScreen: function (direction) {
