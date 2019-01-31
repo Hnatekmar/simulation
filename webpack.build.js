@@ -1,5 +1,4 @@
 const nodeExternals = require('webpack-node-externals');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     target: 'node',
@@ -26,7 +25,7 @@ module.exports = {
     externals: [nodeExternals()],
     plugins: [],
     optimization: {
-        minimize: false
+        minimize: true
        // minimizer: [new UglifyJsPlugin()]
     }
 };
